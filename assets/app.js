@@ -23,7 +23,7 @@
 
   /* ---------- Reveal on scroll ---------- */
   document.documentElement.classList.add("js");
-  const REVEAL = ".section-head, .stat, .feats, .fcol, .numlist li, .step, .panel, .result, .pcard, .score-row, .faq, .cta .wrap, .hero .pill-note, .hero h1, .hero .lead, .hero .actions";
+  const REVEAL = ".section-head, .stat, .b, .fcol, .numlist li, .road > li, .step-row, .score-row, .faq, .cta .wrap, .hero .pill-note, .hero h1, .hero .lead, .hero .actions";
   $$(REVEAL).forEach((el) => {
     el.classList.add("reveal");
     const sib = Array.from(el.parentElement.children).filter((c) => c.classList.contains("reveal"));
@@ -98,22 +98,6 @@
     track.addEventListener("scroll", update, { passive: true }); update();
   })();
 
-  /* ---------- Roadmap sticky steps ---------- */
-  (function steps() {
-    const steps = $$("#roadmap .step"), rail = $$("#roadmap .steps-rail li");
-    if (!steps.length) return;
-    const sio = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const i = steps.indexOf(e.target);
-        rail.forEach((li, j) => li.classList.toggle("active", j === i));
-        steps.forEach((s, j) => s.classList.toggle("dimmed", j !== i));
-      });
-    }, { rootMargin: "-40% 0px -45% 0px" });
-    steps.forEach((s) => sio.observe(s));
-    rail.forEach((li, i) => li.addEventListener("click", () => steps[i].scrollIntoView({ behavior: "smooth", block: "center" })));
-  })();
-
   /* ---------- Product screenshots: boxes start hidden and show once the image loads ---------- */
   $$(".shot img, .shot-art img").forEach((img) => {
     const show = () => {
@@ -125,26 +109,6 @@
     if (img.complete && img.naturalWidth > 0) show();
     img.addEventListener("load", show);
   });
-
-  /* ---------- Features: tabs switch the panel ---------- */
-  (function feats() {
-    const tabs = $$("#feat-rail [role=tab]"), panels = $$("#feat-panels .feat");
-    if (!tabs.length) return;
-    const select = (i) => {
-      tabs.forEach((t, j) => { t.classList.toggle("active", j === i); t.setAttribute("aria-selected", j === i ? "true" : "false"); t.tabIndex = j === i ? 0 : -1; });
-      panels.forEach((p, j) => { p.classList.toggle("is-active", j === i); p.setAttribute("aria-hidden", j === i ? "false" : "true"); });
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener("click", () => select(i));
-      t.addEventListener("keydown", (e) => {
-        const n = e.key === "ArrowDown" || e.key === "ArrowRight" ? i + 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? i - 1 : null;
-        if (n === null) return;
-        e.preventDefault();
-        const k = (n + tabs.length) % tabs.length; select(k); tabs[k].focus();
-      });
-    });
-    select(0);
-  })();
 
   /* ---------- FAQ: animate open and close ---------- */
   $$(".faq details").forEach((d) => {
@@ -269,78 +233,46 @@
     $("#r-ratio").textContent = state.ratio + " : 1";
     $("#r-over").hidden = !a.over;
 
-    // Provider cards
-    const wrap = $("#providers");
-    const best = costs.filter((c) => c.atomix).sort((x, y) => x.atomix.total - y.atomix.total)[0];
-    wrap.innerHTML = costs.map((c) => {
+    // Providers, cheapest first.
+    const ranked = costs.slice().sort((x, y) => (x.atomix ? x.atomix.total : Infinity) - (y.atomix ? y.atomix.total : Infinity));
+    $("#providers").innerHTML = ranked.map((c, i) => {
       const p = c.p;
       if (!c.atomix) {
-        return `<div class="pcard"><div class="name">${p.name}<span>${p.currency}</span></div><div class="warn">${c.note}</div><div class="line"><span>Largest server</span><b>${p.plans[p.plans.length - 1].name}</b></div></div>`;
+        return `<div class="prow"><span class="rank">${i + 1}</span><div class="who"><b>${p.name}</b><span>No single server is large enough</span></div><span class="price">—</span><div class="warn">${c.note}</div></div>`;
       }
       const A = c.atomix;
-      return `<div class="pcard${c === best ? " best" : ""}">
-        <div class="name">${p.name}<span>${p.currency === "EUR" ? "EUR → USD" : "USD"}</span></div>
-        ${c === best ? '<div class="badge">Lowest cost</div>' : ""}
-        <div class="total">${usd(A.total)}<small>/ month</small></div>
-        <div class="plan"><b>${A.plan.name}</b><span>${A.plan.vcpu} vCPU · ${A.plan.ram} GB RAM${A.plan.disk ? " · " + fmtGB(A.plan.disk) + " NVMe" : ""}</span></div>
-        <div class="line"><span>Server</span><b>${usd(A.compute)}</b></div>
-        <div class="line"><span>${A.extraDisk > 0 ? "Extra disk, " + fmtGB(A.extraDisk) : "Disk included"}</span><b>${usd(A.disk)}</b></div>
-        ${a.s3GB > 0 ? `<div class="line"><span>Object storage, ${fmtGB(a.s3GB)}</span><b>${usd(A.object)}</b></div>` : ""}
-        ${A.network ? `<div class="warn">No plan here has ${fmtGB(a.localGB)} of local NVMe, so the rest is network storage: searches over it will be slower.</div>` : ""}
+      const parts = [`server ${usd(A.compute)}`];
+      if (A.extraDisk > 0) parts.push(`extra disk ${fmtGB(A.extraDisk)} ${usd(A.disk)}`);
+      if (a.s3GB > 0) parts.push(`object storage ${usd(A.object)}`);
+      return `<div class="prow${i === 0 ? " best" : ""}">
+        <span class="rank">${i + 1}</span>
+        <div class="who"><b>${p.name}</b>${i === 0 ? "<em>Lowest</em>" : ""}<span>${A.plan.name} · ${A.plan.vcpu} vCPU · ${A.plan.ram} GB RAM${A.plan.disk ? " · " + fmtGB(A.plan.disk) + " NVMe" : ""}</span></div>
+        <span class="price">${usd(A.total)}<small>/mo</small></span>
+        <div class="parts">${parts.join(" + ")}${p.currency === "EUR" ? " · converted from EUR" : ""}</div>
+        ${A.network ? `<div class="warn">No plan here has ${fmtGB(a.localGB)} of local NVMe; the rest is network storage, so searches over it are slower.</div>` : ""}
       </div>`;
     }).join("");
 
     // Elasticsearch
     $("#e-nodes").textContent = e.nodes;
-    $("#e-split").textContent = e.warmNodes > 0 ? `${e.hotNodes} hot + ${e.warmNodes} warm data nodes` : "data nodes (minimum 3)";
+    $("#e-split").textContent = e.warmNodes > 0 ? `${e.hotNodes} hot, ${e.warmNodes} warm` : "all hot";
     $("#e-ram").textContent = fmtN(e.ram);
     $("#e-disk").innerHTML = fmtGB(e.diskGB).replace(/ (GB|TB)/, " <small>$1</small>");
-    $("#e-vcpu").textContent = e.vcpu;
+    $("#e-vcpu").textContent = fmtN(e.vcpu);
     const cloud = e.ram * 730 * state.cloudRate;
     const cloudHigh = e.ram * 730 * D.elastic.cloudRateHighPerGbRamHour;
     $("#e-cloud").textContent = usd(cloud) + " – " + usd(cloudHigh);
 
     const rows = costs.map((c) => ({ name: c.p.name, atomix: c.atomix ? c.atomix.total : null, es: c.es.total, plan: c.atomix ? c.atomix.plan.name : "—", esPlan: e.nodes + " × " + c.es.node.name }));
-    $("#cost-rows").innerHTML = rows.map((r) => `<tr><td>${r.name}</td><td>${r.plan}</td><td class="n">${r.atomix == null ? "—" : usd(r.atomix)}</td><td>${r.esPlan}</td><td class="n">${usd(r.es)}</td><td class="n">${r.atomix == null ? "—" : Math.round((1 - r.atomix / r.es) * 100) + "%"}</td></tr>`).join("")
-      + `<tr><td>Elastic Cloud</td><td>—</td><td class="n">—</td><td>${e.nodes} × ${state.nodeRam} GB hot nodes</td><td class="n">${usd(cloud)} – ${usd(cloudHigh)}</td><td class="n"></td></tr>`;
+    $("#cost-rows").innerHTML = rows.map((r) => `<tr><td>${r.name}</td><td class="n">${r.atomix == null ? "—" : usd(r.atomix)}</td><td class="n">${usd(r.es)}</td><td class="n">${r.atomix == null ? "—" : Math.round((1 - r.atomix / r.es) * 100) + "%"}</td></tr>`).join("")
+      + `<tr><td>Elastic Cloud (hosted)</td><td class="n">—</td><td class="n">${usd(cloud)} – ${usd(cloudHigh)}</td><td class="n"></td></tr>`;
 
     const withBoth = rows.filter((r) => r.atomix != null);
     if (withBoth.length) {
       const avg = withBoth.reduce((s, r) => s + (1 - r.atomix / r.es), 0) / withBoth.length;
       const yearly = withBoth.reduce((s, r) => s + (r.es - r.atomix), 0) / withBoth.length * 12;
-      $("#savings").innerHTML = `<b>${Math.round(avg * 100)}% lower infrastructure cost</b>on the same providers, about ${usd(yearly)} a year on average across them. Elastic licences are extra on the Elasticsearch side. Atomix is licensed per deployment, with no per-GB charge.`;
+      $("#savings").innerHTML = `<b>${Math.round(avg * 100)}% less to run</b>About ${usd(yearly)} a year saved on the same providers, before Elastic licences.`;
     }
-    drawChart(rows, cloud);
-  }
-
-  function drawChart(rows, cloud) {
-    // Elastic Cloud is in the table and the text, not the chart: at 5-10x
-    // the self-managed figure its bar would squash every other one.
-    // Sized to the container so labels keep their 12px at phone width.
-    const box = $("#chart");
-    const svgW = Math.max(300, Math.min(640, box.clientWidth || 640));
-    const narrow = svgW < 460;
-    const rowH = 34, pad = { l: narrow ? 98 : 110, r: narrow ? 62 : 70, t: 10, b: 24 };
-    const data = rows.filter((r) => r.atomix != null).map((r) => [{ k: "Atomix", v: r.atomix, name: r.name }, { k: "Elasticsearch", v: r.es, name: r.name }]);
-    const max = Math.max(...data.flat().map((d) => d.v)) || 1;
-    const groupH = rowH * 2 + 14;
-    const H = pad.t + data.reduce((s, g) => s + (g.length === 1 ? rowH + 14 : groupH), 0) + pad.b;
-    const x = (v) => pad.l + (v / max) * (svgW - pad.l - pad.r);
-    let y = pad.t, out = "";
-    data.forEach((g) => {
-      const top = y;
-      g.forEach((d, i) => {
-        const yy = y + i * rowH;
-        const col = d.k === "Atomix" ? "var(--chart-atomix)" : "var(--chart-es)";
-        out += `<rect x="${pad.l}" y="${yy + 6}" width="${Math.max(2, x(d.v) - pad.l)}" height="${rowH - 12}" fill="${col}"><title>${d.name} · ${d.k}: ${usd(d.v)} per month</title></rect>`;
-        out += `<text x="${x(d.v) + 8}" y="${yy + rowH / 2 + 4}" font-size="12" fill="#0f172a">${usd(d.v)}</text>`;
-      });
-      const label = g[0].name;
-      out += `<text x="${pad.l - 10}" y="${top + (g.length === 1 ? rowH / 2 : rowH) + 4}" font-size="13" font-weight="600" text-anchor="end" fill="#0f172a">${label}</text>`;
-      y += g.length === 1 ? rowH + 14 : groupH;
-    });
-    out += `<line x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H - pad.b}" stroke="#cbd5e1"/>`;
-    $("#chart").innerHTML = `<svg viewBox="0 0 ${svgW} ${H}" role="img" aria-label="Monthly infrastructure cost, Atomix versus Elasticsearch, per provider">${out}</svg>`;
   }
 
   /* inputs */
@@ -403,12 +335,13 @@
   });
   $("#mix-note").textContent = D.mixes[0].note;
 
-  const segBtns = $$(".seg button");
-  function custom() { segBtns.forEach((b) => b.classList.toggle("on", b.dataset.preset === "custom")); }
-  segBtns.forEach((b) => b.addEventListener("click", () => {
-    segBtns.forEach((x) => x.classList.toggle("on", x === b));
+  const presetBtns = $$(".presets button");
+  // Editing a number makes the choice "Custom".
+  function custom() { presetBtns.forEach((b) => b.classList.toggle("on", b.dataset.preset === "custom")); }
+  presetBtns.forEach((b) => b.addEventListener("click", () => {
+    presetBtns.forEach((x) => x.classList.toggle("on", x === b));
     const p = presets[b.dataset.preset];
-    if (!p) { $("#adv").open = true; return; }
+    if (!p) { $("#tune").open = true; return; }
     state.hot = p.hot; state.warm = p.warm; $("#hot").value = p.hot; $("#warm").value = p.warm;
     state.eps = p.eps; epsRange.value = rangeFromEps(p.eps); epsNum.value = p.eps;
     render();
@@ -422,6 +355,4 @@
   $("#provider-notes").innerHTML = D.providers.map((p) => `<li><b>${p.name}:</b> ${p.note}</li>`).join("");
   epsRange.value = rangeFromEps(state.eps); epsNum.value = state.eps;
   render();
-  let resizeTimer;
-  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 150); });
 })();
