@@ -98,18 +98,6 @@
     track.addEventListener("scroll", update, { passive: true }); update();
   })();
 
-  /* ---------- Product screenshots: boxes start hidden and show once the image loads ---------- */
-  $$(".shot img, .shot-art img").forEach((img) => {
-    const show = () => {
-      const box = img.closest(".art") || img.closest("figure") || img.closest("section");
-      if (box) box.hidden = false;
-      const product = $("#product");
-      if (product && product.querySelector("figure:not([hidden])")) product.hidden = false;
-    };
-    if (img.complete && img.naturalWidth > 0) show();
-    img.addEventListener("load", show);
-  });
-
   /* ---------- FAQ: animate open and close ---------- */
   $$(".faq details").forEach((d) => {
     const sum = d.querySelector("summary");
