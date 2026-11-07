@@ -41,6 +41,7 @@ window.ATOMIX_DATA = {
     replicas: 1,            // one replica for any production cluster
     headroom: 1.25,         // disk watermarks: keep 20–25% free
     memDiskRatio: 30,       // hot data nodes: 1 GB RAM per 30 GB disk
+    warmMemDiskRatio: 160,  // warm data nodes: 1 GB RAM per 160 GB disk
     nodeRamGb: 64,          // 64 GB nodes, 31 GB JVM heap
     nodeVcpu: 16,
     minNodes: 3,            // quorum + replicas

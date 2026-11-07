@@ -331,7 +331,8 @@
             <label>EUR → USD rate<input type="number" id="eurUsd" min="0.5" step="0.01"></label>
             <label>Elasticsearch replicas<input type="number" id="replicas" min="0" max="3" step="1"></label>
             <label>ES index size ÷ raw size<input type="number" id="indexFactor" min="0.3" step="0.05"></label>
-            <label>ES disk GB per GB RAM<input type="number" id="memDisk" min="5" step="5"></label>
+            <label>ES hot disk GB per GB RAM<input type="number" id="memDisk" min="5" step="5"></label>
+            <label>ES warm disk GB per GB RAM<input type="number" id="warmMemDisk" min="5" step="10"></label>
             <label>ES RAM per node (GB)<input type="number" id="nodeRam" min="8" step="8"></label>
             <label>Elastic Cloud $ per GB RAM-hour<input type="number" id="cloudRate" min="0" step="0.001"></label>
           </div>
@@ -363,7 +364,7 @@
         <div class="eyebrow">The same workload on Elasticsearch</div>
         <h3 class="h-m" style="margin-top:6px">Index, replicate, keep 25% free: the cluster grows fast.</h3>
         <div class="es-spec">
-          <div><div class="v" id="e-nodes">3</div><div class="k">data nodes (minimum 3)</div></div>
+          <div><div class="v" id="e-nodes">3</div><div class="k" id="e-split">data nodes (minimum 3)</div></div>
           <div><div class="v"><span id="e-ram">192</span><small>GB</small></div><div class="k">RAM across the cluster</div></div>
           <div><div class="v" id="e-disk">0 <small>TB</small></div><div class="k">disk, replicas and headroom included</div></div>
         </div>
@@ -386,7 +387,7 @@
       <summary>How these numbers are worked out</summary>
       <div class="body">
         <p><b>Atomix.</b> Raw logs per day = EPS × event size × 86,400. Stored = raw ÷ compression ratio. Local disk = stored × local days × 1.3, plus 21% of what moved to object storage (the column index stays local so counts and charts stay instant). CPU and RAM come from a table of measured tiers: ingest and compaction cost about 0.1 core per 1,000 EPS of 1 KB events, and the rest is search headroom. RAM is at least one day of stored data for the file cache.</p>
-        <p><b>Elasticsearch.</b> Disk = raw × (local + object days) × <code>index factor</code> × (1 + replicas) × 1.25 for disk watermarks. Nodes = disk ÷ (node RAM × <code>disk per GB RAM</code>), at least 3. Each node is a 64 GB machine with a 31 GB JVM heap, the usual hot-node shape. Elastic's warm and frozen tiers would lower this for long retention, but they need more nodes and licences; the self-managed figure here is the plain hot cluster most teams run. The Elastic Cloud range multiplies the cluster's RAM by two published Standard-tier rates.</p>
+        <p><b>Elasticsearch.</b> Disk = raw × (local + object days) × <code>index factor</code> × (1 + replicas) × 1.25 for disk watermarks. The days Atomix keeps on local disk go on hot nodes at 1 GB of RAM per <code>hot disk GB</code>; the days it keeps in object storage go on warm nodes at 1 GB per <code>warm disk GB</code>, as Elastic's hot-warm architecture would do. At least 3 nodes. Each node is a 64 GB machine with a 31 GB JVM heap. Elastic's frozen tier with searchable snapshots would lower this further for very long retention, but it needs an Enterprise licence. The Elastic Cloud range multiplies the cluster's RAM by two published Standard-tier rates.</p>
         <p><b>Prices.</b> List prices, monthly, no commitments or discounts, converted to USD where needed. Each provider gets the smallest plan that meets the CPU and RAM, plus extra disk at the provider's block or network storage rate, plus object storage for the warm tier. Software licences are not included on either side.</p>
         <ul id="provider-notes"></ul>
         <p><b>Sources</b> (checked <span id="as-of-2">November 2026</span>; prices change, so verify before you buy):</p>

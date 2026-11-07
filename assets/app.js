@@ -112,7 +112,7 @@
   /* ---------- Sizing calculator ---------- */
   const state = {
     eps: 2500, bytes: 1024, hot: 90, warm: 0, mix: "mixed",
-    ratio: 8, replicas: D.elastic.replicas, indexFactor: D.elastic.indexFactor, memDisk: D.elastic.memDiskRatio,
+    ratio: 8, replicas: D.elastic.replicas, indexFactor: D.elastic.indexFactor, memDisk: D.elastic.memDiskRatio, warmMemDisk: D.elastic.warmMemDiskRatio,
     nodeRam: D.elastic.nodeRamGb, cloudRate: D.elastic.cloudRatePerGbRamHour, eurUsd: D.eurUsd
   };
   const presets = {
@@ -139,12 +139,18 @@
     return { rawDay, storedDay, localGB, s3GB, vcpu: tier.vcpu, ram, over };
   }
 
+  // The days Atomix keeps on local disk go on Elasticsearch hot nodes; the
+  // days it keeps in object storage go on denser warm nodes, as Elastic's
+  // hot-warm architecture would do, so the comparison is like for like.
   function esSpec(a) {
     const E = D.elastic;
-    const diskGB = a.rawDay * (state.hot + state.warm) * state.indexFactor * (1 + state.replicas) * E.headroom;
-    const perNodeDisk = state.nodeRam * state.memDisk;
-    const nodes = Math.max(E.minNodes, Math.ceil(diskGB / perNodeDisk));
-    return { diskGB, nodes, ram: nodes * state.nodeRam, vcpu: nodes * E.nodeVcpu, perNodeDisk: diskGB / nodes };
+    const perDay = a.rawDay * state.indexFactor * (1 + state.replicas) * E.headroom;
+    const hotDisk = perDay * state.hot, warmDisk = perDay * state.warm;
+    const hotNodes = Math.ceil(hotDisk / (state.nodeRam * state.memDisk));
+    const warmNodes = Math.ceil(warmDisk / (state.nodeRam * state.warmMemDisk));
+    const nodes = Math.max(E.minNodes, hotNodes + warmNodes);
+    const diskGB = hotDisk + warmDisk;
+    return { diskGB, nodes, hotNodes: Math.max(E.minNodes - warmNodes, hotNodes), warmNodes, ram: nodes * state.nodeRam, vcpu: nodes * E.nodeVcpu, perNodeDisk: diskGB / nodes };
   }
 
   // The smallest plan with the CPU and RAM. Where extra storage cannot be
@@ -227,6 +233,7 @@
 
     // Elasticsearch
     $("#e-nodes").textContent = e.nodes;
+    $("#e-split").textContent = e.warmNodes > 0 ? `${e.hotNodes} hot + ${e.warmNodes} warm data nodes` : "data nodes (minimum 3)";
     $("#e-ram").textContent = fmtN(e.ram);
     $("#e-disk").innerHTML = fmtGB(e.diskGB).replace(/ (GB|TB)/, " <small>$1</small>");
     $("#e-vcpu").textContent = e.vcpu;
@@ -298,6 +305,7 @@
   bind("#replicas", "replicas", (v) => Math.max(0, +v | 0));
   bind("#indexFactor", "indexFactor", (v) => Math.max(0.3, +v || 1.1));
   bind("#memDisk", "memDisk", (v) => Math.max(5, +v || 30));
+  bind("#warmMemDisk", "warmMemDisk", (v) => Math.max(5, +v || 160));
   bind("#nodeRam", "nodeRam", (v) => Math.max(8, +v | 0));
   bind("#cloudRate", "cloudRate", (v) => Math.max(0, +v || 0));
   bind("#eurUsd", "eurUsd", (v) => Math.max(0.5, +v || 1.1));
@@ -325,7 +333,7 @@
 
   // initial values
   $("#bytes").value = "1.0"; $("#hot").value = state.hot; $("#warm").value = state.warm; $("#ratio").value = state.ratio;
-  $("#replicas").value = state.replicas; $("#indexFactor").value = state.indexFactor; $("#memDisk").value = state.memDisk; $("#nodeRam").value = state.nodeRam; $("#cloudRate").value = state.cloudRate; $("#eurUsd").value = state.eurUsd;
+  $("#replicas").value = state.replicas; $("#indexFactor").value = state.indexFactor; $("#memDisk").value = state.memDisk; $("#warmMemDisk").value = state.warmMemDisk; $("#nodeRam").value = state.nodeRam; $("#cloudRate").value = state.cloudRate; $("#eurUsd").value = state.eurUsd;
   $("#as-of").textContent = D.asOf;
   $("#sources").innerHTML = D.sources.map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.label}</a></li>`).join("");
   $("#provider-notes").innerHTML = D.providers.map((p) => `<li><b>${p.name}:</b> ${p.note}</li>`).join("");
