@@ -39,6 +39,7 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body { margin: 0; font-family: var(--font); font-size: 16px; line-height: 1.55; color: var(--ink); background: var(--bg); overflow-x: hidden; }
 img, svg { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
 h1, h2, h3, h4 { margin: 0; font-weight: 500; letter-spacing: -0.025em; line-height: 1.08; }
