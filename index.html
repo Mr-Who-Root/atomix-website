@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atomix — security log analytics that costs less to run</title>
+  <meta name="description" content="Atomix stores security logs compressed up to 59 : 1, searches them in place and raises alerts on 24 rule types. Size your server and compare the cost with Elasticsearch.">
+  <meta property="og:title" content="Atomix — security log analytics that costs less to run">
+  <meta property="og:description" content="Store logs compressed, search in place, alert on 24 rule types. Size a server and compare with Elasticsearch.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta name="theme-color" content="#242933">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="lockup" viewBox="0 0 134.74 24">
+      <path d="M14.07 4.27A8 8 0 1 0 19.73 9.93" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="12" cy="12" r="3.3" fill="currentColor"/>
+      <circle cx="17.66" cy="6.34" r="2.4" fill="currentColor"/>
+      <path transform="translate(34 5)" fill="currentColor" d="M0.46 14H3.63L4.67 10.75H9.64L10.72 14H13.91L9 0H5.24ZM5.38 8.5 5.79 7.24C6.21 5.83 6.62 4.17 7.09 2.25C7.58 4.15 8.02 5.81 8.48 7.24L8.9 8.5ZM19.3 2.38H23.59V14H26.46V2.38H30.74V0H19.3ZM43.09 14.19C46.8 14.19 49.62 11.57 49.62 7.01C49.62 2.43 46.8 -0.19 43.09 -0.19C39.38 -0.19 36.56 2.43 36.56 7.01C36.56 11.56 39.38 14.19 43.09 14.19ZM43.09 11.64C40.92 11.64 39.47 10.01 39.47 7.01C39.47 4 40.92 2.36 43.09 2.36C45.26 2.36 46.71 3.99 46.71 7.01C46.71 10.01 45.26 11.64 43.09 11.64ZM56.01 14H58.85V7.39C58.85 6.34 58.78 4.28 58.75 2.58C59.25 4.46 59.81 6.43 60.14 7.39L62.5 14H64.91L67.23 7.39C67.56 6.4 68.16 4.36 68.63 2.47C68.6 4.24 68.52 6.34 68.52 7.39V14H71.41V0H66.99L64.75 6.43C64.47 7.32 64.04 9.19 63.72 10.7C63.39 9.18 62.96 7.31 62.68 6.43L60.4 0H56.01ZM81.03 0H78.17V14H81.03ZM87.01 14H90.33L92.34 11.07C93.01 10.08 93.27 9.55 93.64 8.87C94 9.56 94.27 10.08 94.92 11.07L96.86 14H100.26L95.31 6.76L99.85 0H96.6L95.04 2.35C94.38 3.35 94.04 4.09 93.67 4.85C93.3 4.09 92.97 3.35 92.32 2.35L90.79 0H87.47L92.04 6.84Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="nav-wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label="Atomix home"><svg viewBox="0 0 134.74 24" width="124" height="22"><use href="#lockup"/></svg></a>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#sizing">Sizing</a>
+      <a href="#compare">Compare</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="cta">
+      <a class="btn btn-accent" href="#contact">Request a demo <span class="arrow">→</span></a>
+      <button class="menu-btn" aria-label="Menu"><span></span></button>
+    </div>
+  </nav>
+</div>
+
+<header class="hero dark" id="top">
+  <canvas aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="pill-note reveal"><i></i> Discover, dashboards, alert rules, threat intel and alerts are shipping today</div>
+    <h1 class="h-xl reveal">Security log analytics, <span class="accent">without the cluster bill.</span></h1>
+    <p class="lead reveal">Atomix stores logs compressed 8 to 59 times, searches them in place and raises alerts on 24 rule types. One server does the work of an Elasticsearch cluster, and keeps a year of logs on a disk you can actually afford.</p>
+    <div class="actions reveal">
+      <a class="btn btn-accent" href="#sizing">Size your server <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#features">See what's inside</a>
+    </div>
+  </div>
+</header>
+
+<section class="light" id="proof">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Measured, not promised</div>
+      <h2 class="h-l">Numbers from real Defender, firewall and Office 365 logs.</h2>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="num"><span data-count="16">0</span><span class="unit">: 1</span></div><div class="what">Compression on Microsoft Defender EDR tables, column index included</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="59">0</span><span class="unit">: 1</span></div><div class="what">Compression on Office 365 audit logs</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="25700">0</span><span class="unit">EPS</span></div><div class="what">Events ingested per second from a single client, on one 8-core server</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="0.1" data-decimals="1">0</span><span class="unit">s</span></div><div class="what">To count and chart 4.2 million events over 30 days</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="features">
+  <div class="wrap">
+    <div class="carousel-head section-head" style="max-width:none">
+      <div>
+        <div class="eyebrow">What's inside</div>
+        <h2 class="h-l">Everything a SOC needs, <span class="accent">under one roof.</span></h2>
+        <p class="lead muted" style="margin-top:14px">From the first byte ingested to the alert an analyst closes. No add-ons, no per-feature tiers.</p>
+      </div>
+      <div class="carousel-nav">
+        <button class="round" data-prev aria-label="Previous">←</button>
+        <button class="round" data-next aria-label="Next">→</button>
+      </div>
+    </div>
+    <div class="track">
+      <article class="card reveal">
+        <div class="meta"><span>01</span><span>Explore</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="200" height="92" rx="8"/><path d="M10 36h200M60 36v70"/><path d="M78 88l22-26 18 14 24-30 20 12" stroke-width="2"/><circle cx="100" cy="62" r="3" fill="currentColor"/><circle cx="142" cy="46" r="3" fill="currentColor"/><path d="M20 50h30M20 60h24M20 70h28"/></svg></div>
+        <h3>Discover</h3>
+        <p>Search with KQL or plain words, filter by clicking values, page through millions of events and save the search for a rule later.</p>
+        <ul><li>Free text &amp; KQL</li><li>Field filters</li><li>Histogram drill-down</li><li>Saved searches</li><li>CSV export</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>02</span><span>Visualize</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="10" width="60" height="46" rx="6"/><rect x="80" y="10" width="130" height="46" rx="6"/><rect x="10" y="66" width="130" height="44" rx="6"/><rect x="150" y="66" width="60" height="44" rx="6"/><path d="M20 46l12-14 10 8 12-18" stroke-width="2"/><path d="M92 46h10v-20h-10zM108 46h10v-28h-10zM124 46h10v-12h-10zM140 46h10v-24h-10zM156 46h10v-16h-10z" fill="currentColor" stroke="none" opacity=".8"/><circle cx="180" cy="88" r="14"/><path d="M180 74a14 14 0 0 1 14 14h-14z" fill="currentColor"/><path d="M20 100c20-20 40 10 60-10s30-10 50 0" stroke-width="2"/></svg></div>
+        <h3>29 visualization types</h3>
+        <p>Bars, lines, pies and tables, plus Sankey, treemap, box plot, calendar heat map, event timeline, MITRE heat map and SOC metrics. Eight chart palettes, dashboard-wide themes.</p>
+        <ul><li>Dashboards</li><li>Drill-down filters</li><li>PNG &amp; PDF export</li><li>Image &amp; markdown panels</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>03</span><span>Live</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="110" cy="60" rx="96" ry="48"/><path d="M14 60h192M110 12v96M40 30c30 16 110 16 140 0M40 90c30-16 110-16 140 0"/><path d="M50 70q60-70 120-20" stroke-width="2"/><circle cx="50" cy="70" r="4" fill="currentColor"/><circle cx="170" cy="50" r="4" fill="currentColor"/><circle cx="124" cy="36" r="3" fill="currentColor"><animate attributeName="opacity" values="1;.2;1" dur="1.6s" repeatCount="indefinite"/></circle></svg></div>
+        <h3>Live traffic maps</h3>
+        <p>Watch firewall flows travel between countries as they arrive, see events per second climb, and tail a live log stream, all pausing when the tab is hidden.</p>
+        <ul><li>Traffic flow map</li><li>Live event rate</li><li>Log stream</li><li>Region &amp; coordinate maps</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>04</span><span>Detect</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M110 12l70 26v30c0 24-30 40-70 46-40-6-70-22-70-46V38z"/><path d="M84 62l18 16 36-38" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>24 rule types</h3>
+        <p>Frequency, spike, flatline, new term, cardinality and metric rules, plus ten built for security: ordered sequences, impossible travel, beaconing, behavioural baselines, risk scoring, volume exfiltration and IOC matches.</p>
+        <ul><li>Preview on real data</li><li>MITRE ATT&amp;CK</li><li>Observables</li><li>Suppression</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>05</span><span>Triage</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="14" width="196" height="24" rx="6"/><rect x="12" y="48" width="196" height="24" rx="6"/><rect x="12" y="82" width="196" height="24" rx="6"/><circle cx="28" cy="26" r="5" fill="currentColor"/><circle cx="28" cy="60" r="5" fill="currentColor" opacity=".6"/><circle cx="28" cy="94" r="5" fill="currentColor" opacity=".3"/><path d="M44 26h70M44 60h50M44 94h60"/><rect x="160" y="20" width="36" height="12" rx="6" fill="currentColor"/></svg></div>
+        <h3>Alerts that carry the evidence</h3>
+        <p>Sequential IDs, severity, assignee, tags and custom fields. Every alert keeps its source events, a detection module for its rule type, observables grouped by IPs, users and hashes, and a work-notes timeline.</p>
+        <ul><li>Bulk acknowledge / close</li><li>Closure classification</li><li>PDF report</li><li>Column layouts</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>06</span><span>Threat intel</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="110" cy="60" r="40"/><circle cx="110" cy="60" r="14"/><path d="M110 8v24M110 88v24M58 60h24M138 60h24"/><circle cx="110" cy="60" r="4" fill="currentColor"/></svg></div>
+        <h3>Threat intel feeds</h3>
+        <p>Pull indicators from any REST API on a schedule: test the call, map the JSON to indicator, type, name, severity and time, and the IOC rule type matches them against your events.</p>
+        <ul><li>IPs, domains, URLs, hashes</li><li>Manual lists</li><li>Secrets masked</li><li>Per-source severity</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>07</span><span>Storage</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="14" y="20" width="192" height="80" rx="8"/><path d="M14 46h192M14 72h192"/><rect x="24" y="28" width="150" height="10" rx="5" fill="currentColor" opacity=".9"/><rect x="24" y="54" width="60" height="10" rx="5" fill="currentColor" opacity=".6"/><rect x="24" y="80" width="18" height="10" rx="5" fill="currentColor"/><text x="180" y="37" font-size="9" fill="currentColor" stroke="none">raw</text><text x="180" y="63" font-size="9" fill="currentColor" stroke="none">gzip</text><text x="180" y="89" font-size="9" fill="currentColor" stroke="none">Atomix</text></svg></div>
+        <h3>Compressed, searchable storage</h3>
+        <p>Logs are stored as CLP archives with a column index, so counts and charts come from a few megabytes instead of rescanning terabytes. Lifecycle policies move old archives to S3 and keep them searchable.</p>
+        <ul><li>Hot → warm → delete</li><li>S3 / MinIO tiers</li><li>Snapshots</li><li>Compaction</li></ul>
+      </article>
+      <article class="card reveal">
+        <div class="meta"><span>08</span><span>Platform</span></div>
+        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="20" y="20" width="56" height="36" rx="6"/><rect x="144" y="20" width="56" height="36" rx="6"/><rect x="82" y="64" width="56" height="36" rx="6"/><path d="M76 38h68M48 56v8c0 10 20 10 34 0M172 56v8c0 10-20 10-34 0"/><circle cx="48" cy="38" r="4" fill="currentColor"/><circle cx="172" cy="38" r="4" fill="currentColor"/><circle cx="110" cy="82" r="4" fill="currentColor"/></svg></div>
+        <h3>Built for teams and tenants</h3>
+        <p>Organisations with their own users, roles and API keys. Audit logs for sign-ins, keys and API traffic. Eleven UI themes. Every export lands in Reports. Offline, air-gapped builds.</p>
+        <ul><li>Multi-tenant</li><li>RBAC</li><li>API keys with limits</li><li>Audit logs</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="full-list">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The full list</div>
+      <h2 class="h-l">What ships today.</h2>
+    </div>
+    <div class="feature-groups">
+      <div class="fgroup reveal">
+        <h3><span class="dot"></span>Ingest &amp; storage</h3>
+        <ul>
+          <li><span><strong>JSON ingest API</strong> with API keys, per-key limits and backpressure</span></li>
+          <li><span><strong>CLP compression</strong>, one archive per batch, compacted in the background</span></li>
+          <li><span><strong>Column index</strong> for exact counts and aggregations with no document cap</span></li>
+          <li><span><strong>Lifecycle policies</strong>: read-only, force-merge, snapshot, warm (S3), delete</span></li>
+          <li><span><strong>Local, MinIO or S3</strong> archive storage with on-demand fetch cache</span></li>
+          <li><span><strong>Index management</strong> with health, size, counts and bulk delete</span></li>
+        </ul>
+      </div>
+      <div class="fgroup reveal">
+        <h3><span class="dot"></span>Explore &amp; visualize</h3>
+        <ul>
+          <li><span><strong>Discover</strong> with free text, KQL, field filters, column layouts and deep paging</span></li>
+          <li><span><strong>29 visualization types</strong> including live maps and security views</span></li>
+          <li><span><strong>Dashboards</strong> with time ranges, drill-down, themes and image panels</span></li>
+          <li><span><strong>Saved objects</strong> import and export as NDJSON</span></li>
+          <li><span><strong>Exports</strong> to CSV, PNG and PDF, all kept under Reports</span></li>
+          <li><span><strong>Eleven themes</strong> including high contrast and three effect themes</span></li>
+        </ul>
+      </div>
+      <div class="fgroup reveal">
+        <h3><span class="dot"></span>Detect &amp; respond</h3>
+        <ul>
+          <li><span><strong>24 rule types</strong>, each with a preview on real data before you save</span></li>
+          <li><span><strong>MITRE ATT&amp;CK</strong> tactics and techniques on every rule and alert</span></li>
+          <li><span><strong>Threat intel</strong> indicators, scheduled REST feeds and IOC matching</span></li>
+          <li><span><strong>Alerts</strong> with triage, work notes, observables, closure classification and PDF</span></li>
+          <li><span><strong>Store</strong> of prebuilt rules, connectors and playbook templates</span></li>
+          <li><span><strong>Playbook executions</strong> page, ready for the SOAR engine below</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="who" style="padding-top:0">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Who it's for</div>
+        <h2 class="h-l">Teams with more logs than budget.</h2>
+        <p class="lead muted" style="margin-top:16px">Four situations we are usually called into.</p>
+      </div>
+      <ol class="numlist">
+        <li class="reveal"><span class="n">01</span><div><h3>SOC teams paying per gigabyte</h3><p>Ingest-based pricing punishes the logs you need most. Atomix stores them for a fraction of the disk, on hardware you choose.</p></div></li>
+        <li class="reveal"><span class="n">02</span><div><h3>MSSPs with many tenants</h3><p>One deployment, many organisations, each with its own users, keys, rules and retention.</p></div></li>
+        <li class="reveal"><span class="n">03</span><div><h3>Regulated and air-gapped networks</h3><p>Offline builds, local storage, audit logs and no data leaving the site.</p></div></li>
+        <li class="reveal"><span class="n">04</span><div><h3>Teams tired of tuning clusters</h3><p>No shards, no JVM heaps, no replica maths. One server, one data directory, one backup.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">In development</div>
+      <h2 class="h-l">What's being built next.</h2>
+      <p class="lead muted">Four work streams, in the order they are planned to ship. Nothing here is available yet.</p>
+    </div>
+    <div class="steps">
+      <aside class="steps-rail"><ol>
+        <li class="active">01 · SOAR</li>
+        <li>02 · Agents</li>
+        <li>03 · AI</li>
+        <li>04 · High availability</li>
+      </ol></aside>
+      <div>
+        <article class="step" id="step-soar">
+          <div class="tag"><i></i> In development</div>
+          <h3>SOAR playbooks</h3>
+          <p class="lead">Alerts already carry the evidence. Playbooks will act on it: enrich, notify, open tickets, isolate a host, and wait for an analyst's approval when it matters.</p>
+          <div class="grid">
+            <ul>
+              <li>Visual playbook editor with steps, branches and approvals</li>
+              <li>Connectors for email, chat, ticketing, EDR and firewalls, installed from the Store</li>
+              <li>Runs recorded on the Playbook executions page with each step's result</li>
+              <li>Incidents that group related alerts</li>
+            </ul>
+            <div class="art"><svg viewBox="0 0 360 200" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="20" y="80" width="70" height="40" rx="8"/><rect x="145" y="30" width="70" height="40" rx="8"/><rect x="145" y="130" width="70" height="40" rx="8"/><rect x="270" y="80" width="70" height="40" rx="8"/><path d="M90 100h25v-50h30M90 100h25v50h30M215 50h25v50h30M215 150h25v-50h30" stroke-dasharray="4 4"/><path d="M48 100l6 6 12-12" stroke-width="2.5"/><circle cx="180" cy="50" r="5" fill="currentColor"/><path d="M172 150h16M180 142v16"/><path d="M296 94l6 6 12-12" stroke-width="2.5"><animate attributeName="opacity" values="0;1;1" dur="2.4s" repeatCount="indefinite"/></path></svg></div>
+          </div>
+        </article>
+        <article class="step" id="step-agents">
+          <div class="tag"><i></i> In development</div>
+          <h3>Log collection agents</h3>
+          <p class="lead">A small agent for Windows, Linux and macOS that ships logs straight into Atomix, registers itself, and takes its configuration from a profile you manage centrally.</p>
+          <div class="grid">
+            <ul>
+              <li>Windows event logs, Sysmon, syslog, journald, files and the macOS unified log</li>
+              <li>Agent registration and profiles per group of hosts</li>
+              <li>Firewall drivers so a playbook can block on the host</li>
+              <li>Fleet dashboard: which hosts report, which went quiet</li>
+            </ul>
+            <div class="art"><svg viewBox="0 0 360 200" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="30" y="30" width="80" height="54" rx="8"/><rect x="30" y="116" width="80" height="54" rx="8"/><rect x="250" y="60" width="80" height="80" rx="10"/><path d="M110 57h50q40 0 60 43M110 143h50q40 0 60-43"/><circle cx="290" cy="100" r="18"/><circle cx="290" cy="100" r="6" fill="currentColor"/><text x="42" y="62" font-size="11" fill="currentColor" stroke="none">Windows</text><text x="42" y="148" font-size="11" fill="currentColor" stroke="none">Linux / macOS</text><circle cx="180" cy="78" r="3" fill="currentColor"><animate attributeName="cx" values="110;250" dur="2s" repeatCount="indefinite"/></circle><circle cx="180" cy="122" r="3" fill="currentColor"><animate attributeName="cx" values="110;250" dur="2.6s" repeatCount="indefinite"/></circle></svg></div>
+          </div>
+        </article>
+        <article class="step" id="step-ai">
+          <div class="tag"><i></i> In development</div>
+          <h3>AI assistance</h3>
+          <p class="lead">Ask for what you want in plain language and get the KQL. Let the system group the noise so analysts look at clusters, not thousands of identical events.</p>
+          <div class="grid">
+            <ul>
+              <li>Natural language to KQL in Discover and the rule editor</li>
+              <li>Anomaly clustering over fields and time</li>
+              <li>Alert summaries with the evidence that mattered</li>
+              <li>Runs on your own models or a provider you choose</li>
+            </ul>
+            <div class="art"><svg viewBox="0 0 360 200" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="30" y="40" width="300" height="44" rx="22"/><text x="52" y="68" font-size="13" fill="currentColor" stroke="none">failed logons from one IP last hour</text><path d="M180 84v30"/><rect x="30" y="114" width="300" height="50" rx="10"/><text x="44" y="135" font-size="12" font-family="monospace" fill="currentColor" stroke="none">event.action: logon_failed AND @timestamp &gt;= now-1h</text><text x="44" y="152" font-size="12" font-family="monospace" fill="currentColor" stroke="none">| group by source.ip | count &gt; 10</text></svg></div>
+          </div>
+        </article>
+        <article class="step" id="step-ha">
+          <div class="tag"><i></i> In development</div>
+          <h3>High availability</h3>
+          <p class="lead">Today Atomix runs on one server. The next step is several: ingest and query nodes that share storage, so a failed machine means a restart, not a gap in your logs.</p>
+          <div class="grid">
+            <ul>
+              <li>Multiple ingest and query nodes behind one address</li>
+              <li>Shared object storage with replicated metadata</li>
+              <li>Helm chart and on-premises installer</li>
+              <li>Rolling upgrades with no ingest pause</li>
+            </ul>
+            <div class="art"><svg viewBox="0 0 360 200" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="40" y="30" width="80" height="40" rx="8"/><rect x="140" y="30" width="80" height="40" rx="8"/><rect x="240" y="30" width="80" height="40" rx="8"/><path d="M80 70v30M180 70v30M280 70v30"/><rect x="40" y="100" width="280" height="30" rx="15"/><path d="M180 130v24"/><rect x="100" y="154" width="160" height="30" rx="8"/><text x="150" y="173" font-size="11" fill="currentColor" stroke="none">object storage</text><circle cx="80" cy="50" r="4" fill="currentColor"/><circle cx="180" cy="50" r="4" fill="currentColor"/><circle cx="280" cy="50" r="4" fill="currentColor"><animate attributeName="opacity" values="1;0;1" dur="3s" repeatCount="indefinite"/></circle></svg></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="sizing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Sizing &amp; cost</div>
+      <h2 class="h-l">What server do you need, <span class="accent">and what would it cost?</span></h2>
+      <p class="lead muted">Pick a size or set your own numbers. The spec comes from measured ingest and search costs; the prices are list prices from <span id="as-of"></span>, and the same workload is sized for Elasticsearch so you can compare.</p>
+    </div>
+    <div class="calc">
+      <div class="panel">
+        <h3>Your workload</h3>
+        <div class="seg" role="group" aria-label="Presets">
+          <button data-preset="small">Small</button>
+          <button data-preset="medium" class="on">Medium</button>
+          <button data-preset="large">Large</button>
+          <button data-preset="custom">Customise</button>
+        </div>
+        <div class="field">
+          <label for="eps">Events per second <output id="o-eps"></output></label>
+          <div class="row"><input type="range" id="eps" min="0" max="1000" step="1"><input type="number" id="eps-n" min="100" max="200000" step="100"></div>
+          <div class="help">Average over the day. A 500-seat company with EDR and firewalls is usually 500–2,000 EPS.</div>
+        </div>
+        <div class="field">
+          <label for="mix">Log mix</label>
+          <div class="row"><select id="mix"></select></div>
+          <div class="help" id="mix-note"></div>
+        </div>
+        <div class="field">
+          <label for="bytes">Average event size <output id="o-bytes"></output></label>
+          <div class="row"><input type="number" id="bytes" min="0.1" max="50" step="0.1"> <span class="help">KB of JSON per event</span></div>
+        </div>
+        <div class="field">
+          <label for="hot">Keep on local disk <output id="o-hot"></output></label>
+          <div class="row"><input type="number" id="hot" min="1" max="3650" step="1"> <span class="help">days, fast to search</span></div>
+        </div>
+        <div class="field">
+          <label for="warm">Then keep in object storage <output id="o-warm"></output></label>
+          <div class="row"><input type="number" id="warm" min="0" max="3650" step="1"> <span class="help">days on S3-style storage, still searchable</span></div>
+        </div>
+        <details class="adv" id="adv">
+          <summary>Assumptions you can change</summary>
+          <div class="grid2">
+            <label>Compression ratio (raw : stored)<input type="number" id="ratio" min="1" step="0.5"></label>
+            <label>EUR → USD rate<input type="number" id="eurUsd" min="0.5" step="0.01"></label>
+            <label>Elasticsearch replicas<input type="number" id="replicas" min="0" max="3" step="1"></label>
+            <label>ES index size ÷ raw size<input type="number" id="indexFactor" min="0.3" step="0.05"></label>
+            <label>ES disk GB per GB RAM<input type="number" id="memDisk" min="5" step="5"></label>
+            <label>ES RAM per node (GB)<input type="number" id="nodeRam" min="8" step="8"></label>
+            <label>Elastic Cloud $ per GB RAM-hour<input type="number" id="cloudRate" min="0" step="0.001"></label>
+          </div>
+        </details>
+      </div>
+
+      <div>
+        <div class="result reveal">
+          <div class="eyebrow">Recommended Atomix server</div>
+          <h3 class="h-m">One server, all of it.</h3>
+          <div class="spec">
+            <div><div class="v"><span id="r-vcpu">8</span><small>vCPU</small></div><div class="k">Ingest, search, alert engine and UI</div></div>
+            <div><div class="v"><span id="r-ram">16</span><small>GB</small></div><div class="k">RAM, including OS file cache</div></div>
+            <div><div class="v" id="r-disk">1.3 <small>TB</small></div><div class="k">NVMe or SSD data disk</div></div>
+            <div><div class="v" id="r-s3">0 <small>GB</small></div><div class="k">Object storage for the warm tier</div></div>
+          </div>
+          <div class="notes">
+            <div>Raw logs <b id="r-raw"></b> a day become <b id="r-stored"></b> on disk at <b id="r-ratio"></b>.</div>
+            <div>Add a separate 20 GB disk for the operating system and Docker, and keep 30% of the data disk free; that headroom is already included.</div>
+            <div id="r-over" hidden><b>Above 50,000 EPS</b> a single server stops being the right answer. Talk to us about a multi-node layout.</div>
+          </div>
+        </div>
+        <div class="providers" id="providers"></div>
+      </div>
+    </div>
+
+    <div class="vs">
+      <div class="panel reveal">
+        <div class="eyebrow">The same workload on Elasticsearch</div>
+        <h3 class="h-m" style="margin-top:6px">Index, replicate, keep 25% free: the cluster grows fast.</h3>
+        <div class="es-spec">
+          <div><div class="v" id="e-nodes">3</div><div class="k">data nodes (minimum 3)</div></div>
+          <div><div class="v"><span id="e-ram">192</span><small>GB</small></div><div class="k">RAM across the cluster</div></div>
+          <div><div class="v" id="e-disk">0 <small>TB</small></div><div class="k">disk, replicas and headroom included</div></div>
+        </div>
+        <p class="muted" style="margin-top:14px;font-size:14px">About <b id="e-vcpu"></b> vCPU in total. Elastic Cloud (hosted) for the same hot nodes: <b id="e-cloud"></b> a month depending on the rate card, with storage included in the node price.</p>
+        <div class="savings" id="savings"></div>
+      </div>
+      <div class="panel reveal">
+        <div class="eyebrow">Monthly infrastructure cost</div>
+        <h3 class="h-m" style="margin-top:6px">Atomix vs Elasticsearch, per provider</h3>
+        <div class="legend"><span><i style="background:var(--chart-atomix)"></i>Atomix</span><span><i style="background:var(--chart-es)"></i>Elasticsearch, self-managed</span></div>
+        <div class="chart" id="chart"></div>
+        <table class="costs">
+          <thead><tr><th>Provider</th><th>Atomix server</th><th class="n">Atomix</th><th>Elasticsearch nodes</th><th class="n">Elasticsearch</th><th class="n">Lower by</th></tr></thead>
+          <tbody id="cost-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <details class="method">
+      <summary>How these numbers are worked out</summary>
+      <div class="body">
+        <p><b>Atomix.</b> Raw logs per day = EPS × event size × 86,400. Stored = raw ÷ compression ratio. Local disk = stored × local days × 1.3, plus 21% of what moved to object storage (the column index stays local so counts and charts stay instant). CPU and RAM come from a table of measured tiers: ingest and compaction cost about 0.1 core per 1,000 EPS of 1 KB events, and the rest is search headroom. RAM is at least one day of stored data for the file cache.</p>
+        <p><b>Elasticsearch.</b> Disk = raw × (local + object days) × <code>index factor</code> × (1 + replicas) × 1.25 for disk watermarks. Nodes = disk ÷ (node RAM × <code>disk per GB RAM</code>), at least 3. Each node is a 64 GB machine with a 31 GB JVM heap, the usual hot-node shape. Elastic's warm and frozen tiers would lower this for long retention, but they need more nodes and licences; the self-managed figure here is the plain hot cluster most teams run. The Elastic Cloud range multiplies the cluster's RAM by two published Standard-tier rates.</p>
+        <p><b>Prices.</b> List prices, monthly, no commitments or discounts, converted to USD where needed. Each provider gets the smallest plan that meets the CPU and RAM, plus extra disk at the provider's block or network storage rate, plus object storage for the warm tier. Software licences are not included on either side.</p>
+        <ul id="provider-notes"></ul>
+        <p><b>Sources</b> (checked <span id="as-of-2">November 2026</span>; prices change, so verify before you buy):</p>
+        <ul id="sources"></ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="dark" id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Side by side</div>
+      <h2 class="h-l">Atomix and Elasticsearch, <span class="accent">on the things that cost money.</span></h2>
+    </div>
+    <table class="cmp">
+      <thead><tr><th>Topic</th><th>Atomix</th><th>Elasticsearch</th></tr></thead>
+      <tbody>
+        <tr><td>Bytes on disk per GB of raw logs</td><td class="ok">60–130 MB, measured on EDR, firewall and O365 logs</td><td>About 1.1 GB per copy; 2.2 GB with one replica, before watermark headroom</td></tr>
+        <tr><td>Servers for 1,000 EPS, 90 days</td><td class="ok">One 8 vCPU, 16 GB server</td><td>Three or more 64 GB data nodes plus master and Kibana</td></tr>
+        <tr><td>Memory model</td><td class="ok">A few hundred MB plus the OS file cache</td><td>JVM heap sized to half of RAM, capped at 31 GB per node</td></tr>
+        <tr><td>Exact counts over a year</td><td class="ok">From the column index, no document cap</td><td>From the inverted index; fast while the data is hot</td></tr>
+        <tr><td>Keeping old data searchable</td><td class="ok">Archives move to S3; the column index stays local, so charts stay instant</td><td>Warm, cold and frozen tiers; searchable snapshots need an Enterprise licence</td></tr>
+        <tr><td>Security content</td><td class="ok">24 rule types, threat intel, MITRE mapping and alert triage included</td><td>SIEM app and detection rules in Kibana; some features need Platinum or Enterprise</td></tr>
+        <tr><td>Query language</td><td class="ok">KQL and free text, the same syntax analysts already know</td><td>KQL, Lucene, EQL and ES|QL</td></tr>
+        <tr><td>Operations</td><td class="ok">One data directory, one backup, lifecycle policies</td><td>Shards, replicas, ILM, rollover, heap and watermarks to tune</td></tr>
+        <tr><td>High availability</td><td>Single server today; multi-node in development</td><td class="ok">Mature multi-node clustering</td></tr>
+        <tr><td>Ecosystem</td><td>Agents in development; JSON ingest API today</td><td class="ok">Beats, Elastic Agent, hundreds of integrations</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="light" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="h-l">Questions we get asked.</h2>
+    </div>
+    <div class="faq">
+      <details><summary>How does Atomix store logs so small?</summary><div class="a">Logs are compressed with CLP, which separates each event's structure from its variable values and stores both in columns. Alongside every archive, Atomix keeps a small column index of the fields people filter and count on. Counts, charts and field filters are answered from that index; only free-text search and document fetches open the archive.</div></details>
+      <details><summary>Is search slower than Elasticsearch?</summary><div class="a">Counts, charts and field queries are answered from the column index in milliseconds. Free-text search scans archives and takes a few seconds per 100 million events on an 8-core server. If most of your searches are free text over very long ranges, Elasticsearch's inverted index will be faster; if they are field filters, dashboards and rules, Atomix is usually faster and far cheaper.</div></details>
+      <details><summary>Can I keep a year of logs?</summary><div class="a">Yes. A lifecycle policy moves archives older than your local window to S3-compatible storage and keeps the column index local, so dashboards and counts over the whole year stay instant and a search fetches the archive on demand.</div></details>
+      <details><summary>What do alerts do today?</summary><div class="a">Rules raise alerts with the matching events, observables and a rule-specific detection view. Analysts acknowledge, assign, tag, add notes and close with a classification. Automated actions come with the SOAR playbook engine, which is in development.</div></details>
+      <details><summary>How do I get logs in?</summary><div class="a">Through the JSON ingest API with an API key: anything that can POST JSON (Logstash, Fluent Bit, Vector, a script) works today. Native agents for Windows, Linux and macOS are in development.</div></details>
+      <details><summary>Is the sizing calculator exact?</summary><div class="a">It is an estimate from measured numbers on real logs. Your compression ratio depends on your sources; the Elasticsearch figures use the sizing rules Elastic and most operators recommend; prices are list prices that change. Use it to compare orders of magnitude, then verify with the provider.</div></details>
+    </div>
+  </div>
+</section>
+
+<section class="dark cta" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Next step</div>
+    <h2 class="h-l">Run it on your logs.</h2>
+    <p class="lead muted" style="margin:16px auto 0;max-width:52ch">Send us a sample of your logs and your retention target. You get a sized server, a cost comparison and a running demo on your own data.</p>
+    <div class="actions">
+      <a class="btn btn-accent" href="https://github.com/Mr-Who-Root/atomix-website/issues/new?title=Demo%20request&body=Tell%20us%20about%20your%20log%20sources%2C%20EPS%20and%20retention." target="_blank" rel="noopener">Request a demo <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#sizing">Back to sizing</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Atomix"><svg viewBox="0 0 134.74 24" width="100" height="18"><use href="#lockup"/></svg></a>
+    <div>Prices and measurements as of <span id="as-of-3">November 2026</span>. Elasticsearch is a trademark of Elasticsearch B.V.; AWS, Hetzner, Contabo and DigitalOcean are trademarks of their owners.</div>
+    <a href="https://github.com/Mr-Who-Root/atomix-website" target="_blank" rel="noopener">Site source</a>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
