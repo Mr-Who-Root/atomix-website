@@ -105,11 +105,16 @@
     rail.forEach((li, i) => li.addEventListener("click", () => steps[i].scrollIntoView({ behavior: "smooth", block: "center" })));
   })();
 
-  /* ---------- Product screenshots: hide the box when the file is missing ---------- */
+  /* ---------- Product screenshots: boxes start hidden and show once the image loads ---------- */
   $$(".shot img, .shot-art img").forEach((img) => {
-    const hide = () => { const box = img.closest(".art") || img.closest("figure") || img.closest("section"); if (box) box.hidden = true; };
-    if (img.complete && img.naturalWidth === 0) hide();
-    img.addEventListener("error", hide);
+    const show = () => {
+      const box = img.closest(".art") || img.closest("figure") || img.closest("section");
+      if (box) box.hidden = false;
+      const product = $("#product");
+      if (product && product.querySelector("figure:not([hidden])")) product.hidden = false;
+    };
+    if (img.complete && img.naturalWidth > 0) show();
+    img.addEventListener("load", show);
   });
 
   /* ---------- Features: side list switches the panel ---------- */
@@ -118,9 +123,31 @@
     if (!rail.length) return;
     rail.forEach((li, i) => li.querySelector("button").addEventListener("click", () => {
       rail.forEach((x, j) => x.classList.toggle("active", j === i));
-      panels.forEach((p, j) => { p.hidden = j !== i; });
+      panels.forEach((p, j) => { p.classList.toggle("is-active", j === i); p.setAttribute("aria-hidden", j === i ? "false" : "true"); });
     }));
   })();
+
+  /* ---------- FAQ: animate open and close ---------- */
+  $$(".faq details").forEach((d) => {
+    const sum = d.querySelector("summary");
+    let running = null;
+    sum.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (running) return;
+      if (reduceMotion) { d.open = !d.open; return; }
+      const from = d.offsetHeight;
+      const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+      if (d.open) {
+        running = d.animate([{ height: from + "px" }, { height: sum.offsetHeight + "px" }], { duration: 260, easing: ease });
+        running.onfinish = () => { d.open = false; running = null; };
+      } else {
+        d.open = true;
+        const to = d.offsetHeight;
+        running = d.animate([{ height: from + "px" }, { height: to + "px" }], { duration: 320, easing: ease });
+        running.onfinish = () => { running = null; };
+      }
+    });
+  });
 
   /* ---------- Sizing calculator ---------- */
   const state = {
@@ -270,7 +297,11 @@
   function drawChart(rows, cloud) {
     // Elastic Cloud is in the table and the text, not the chart: at 5-10x
     // the self-managed figure its bar would squash every other one.
-    const svgW = 640, rowH = 34, pad = { l: 110, r: 70, t: 10, b: 24 };
+    // Sized to the container so labels keep their 12px at phone width.
+    const box = $("#chart");
+    const svgW = Math.max(300, Math.min(640, box.clientWidth || 640));
+    const narrow = svgW < 460;
+    const rowH = 34, pad = { l: narrow ? 98 : 110, r: narrow ? 62 : 70, t: 10, b: 24 };
     const data = rows.filter((r) => r.atomix != null).map((r) => [{ k: "Atomix", v: r.atomix, name: r.name }, { k: "Elasticsearch", v: r.es, name: r.name }]);
     const max = Math.max(...data.flat().map((d) => d.v)) || 1;
     const groupH = rowH * 2 + 14;
@@ -352,4 +383,6 @@
   $("#provider-notes").innerHTML = D.providers.map((p) => `<li><b>${p.name}:</b> ${p.note}</li>`).join("");
   epsRange.value = rangeFromEps(state.eps); epsNum.value = state.eps;
   render();
+  let resizeTimer;
+  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 150); });
 })();

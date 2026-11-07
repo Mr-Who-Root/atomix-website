@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=7">
+  <link rel="stylesheet" href="assets/styles.css?v=13">
 </head>
 <body>
 
@@ -59,9 +59,9 @@
   </div>
 </header>
 
-<section class="dark hero-shot" aria-label="Discover in Atomix">
+<section class="dark hero-shot" aria-label="Discover in Atomix" hidden>
   <div class="wrap">
-    <figure class="shot" style="margin:0"><img src="assets/img/discover.jpg" alt="Atomix Discover: 590,746 events over a month on the EDR-Network index, with the histogram and the first page of documents" width="1446" height="840" loading="eager" onerror="this.closest('section').hidden=true"></figure>
+    <figure class="shot" style="margin:0"><img src="assets/img/discover.jpg" alt="Atomix Discover: 590,746 events over a month on the EDR-Network index, with the histogram and the first page of documents" width="1446" height="840" loading="eager" onload="this.closest('section').hidden=false"></figure>
   </div>
 </section>
 
@@ -99,14 +99,14 @@
         <li><button type="button">Platform</button></li>
       </ol></aside>
       <div id="feat-panels">
-        <article class="step feat"><div class="tag">Explore</div><h3>Discover</h3><p class="lead">Search with KQL or plain words, filter by clicking values, page through millions of events and save the search for a rule later.</p><div class="grid"><ul><li>Free text and KQL in one box</li><li>Field filters: is, is not, one of, exists, range</li><li>Histogram drill-down and deep paging</li><li>Saved searches and CSV export</li></ul><div class="art shot-art"><img src="assets/img/discover.jpg" alt="Discover showing a month of EDR events with the histogram and document table" width="1446" height="840" onerror="this.closest('.art').hidden=true"></div></div></article>
-        <article class="step feat" hidden><div class="tag">Visualize</div><h3>29 visualization types</h3><p class="lead">Bars, lines, pies and tables, plus Sankey, treemap, box plot, calendar heat map, event timeline, MITRE heat map and SOC metrics.</p><div class="grid"><ul><li>Dashboards with time ranges and drill-down filters</li><li>Eight chart palettes and dashboard-wide themes</li><li>PNG and PDF export, kept under Reports</li><li>Image and markdown panels</li></ul></div></article>
-        <article class="step feat" hidden><div class="tag">Live</div><h3>Live traffic maps</h3><p class="lead">Firewall flows travel between countries as they arrive, events per second climb, and a log stream tails the newest events.</p><div class="grid"><ul><li>Traffic flow map with allow and deny colours</li><li>Live event rate, split by a field</li><li>Log stream that flashes new rows</li><li>Region and coordinate maps</li></ul></div></article>
-        <article class="step feat" hidden><div class="tag">Detect</div><h3>24 rule types</h3><p class="lead">Frequency, spike, flatline, new term, cardinality and metric rules, plus ten built for security work.</p><div class="grid"><ul><li>Ordered sequences, impossible travel, beaconing</li><li>Behavioural baselines, risk scoring, volume exfiltration</li><li>Preview on real data before you save</li><li>MITRE ATT&amp;CK tactics and techniques on every rule</li></ul><div class="art shot-art"><img src="assets/img/rules.jpg" alt="The Alert rules list with runbook IDs, severity, rule type, index and last run" width="1446" height="840" onerror="this.closest('.art').hidden=true"></div></div></article>
-        <article class="step feat" hidden><div class="tag">Triage</div><h3>Alerts with the evidence</h3><p class="lead">Sequential IDs, severity, assignee, tags and custom fields. Every alert keeps its source events and observables.</p><div class="grid"><ul><li>A detection view for each rule type</li><li>Observables grouped by IPs, users, hosts and hashes</li><li>Work-notes timeline with automatic entries</li><li>Bulk acknowledge, close with a classification, PDF report</li></ul><div class="art shot-art"><img src="assets/img/alerts.jpg" alt="The Alerts page with open alerts by severity and the table of detections" width="1446" height="840" onerror="this.closest('.art').hidden=true"></div></div></article>
-        <article class="step feat" hidden><div class="tag">Threat intel</div><h3>Threat intel feeds</h3><p class="lead">Pull indicators from any REST API on a schedule, map the response to indicator fields, and match them against events.</p><div class="grid"><ul><li>IPs, domains, URLs, hashes and emails</li><li>Test run, then map fields to indicator, type, name, severity and time</li><li>Manual lists for your own indicators</li><li>Secrets masked, severity per source</li></ul></div></article>
-        <article class="step feat" hidden><div class="tag">Storage</div><h3>Compressed, searchable storage</h3><p class="lead">Logs are stored as CLP archives with a column index, so counts and charts read a few megabytes instead of terabytes.</p><div class="grid"><ul><li>Lifecycle policies: read-only, snapshot, warm (S3), delete</li><li>S3 and MinIO tiers with on-demand fetch</li><li>Background compaction into larger archives</li><li>Exact counts over a year, no document cap</li></ul></div></article>
-        <article class="step feat" hidden><div class="tag">Platform</div><h3>Built for teams and tenants</h3><p class="lead">Organisations with their own users, roles and API keys. Audit logs for sign-ins, keys and API traffic.</p><div class="grid"><ul><li>Multi-tenant with owner, admin and analyst roles</li><li>API keys with ingest limits</li><li>Audit logs for users and API traffic</li><li>Eleven UI themes, offline and air-gapped builds</li></ul><div class="art shot-art"><img src="assets/img/rule-editor.jpg" alt="The three-step rule editor on the basic info step" width="1446" height="840" onerror="this.closest('.art').hidden=true"></div></div></article>
+        <article class="step feat is-active"><div class="tag">Explore</div><h3>Discover</h3><p class="lead">Search with KQL or plain words, filter by clicking values, page through millions of events and save the search for a rule later.</p><div class="grid"><ul><li>Free text and KQL in one box</li><li>Field filters: is, is not, one of, exists, range</li><li>Histogram drill-down and deep paging</li><li>Saved searches and CSV export</li></ul><div class="art shot-art" hidden><img src="assets/img/discover.jpg" alt="Discover showing a month of EDR events with the histogram and document table" width="1446" height="840" onload="this.closest('.art').hidden=false"></div></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Visualize</div><h3>29 visualization types</h3><p class="lead">Bars, lines, pies and tables, plus Sankey, treemap, box plot, calendar heat map, event timeline, MITRE heat map and SOC metrics.</p><div class="grid"><ul><li>Dashboards with time ranges and drill-down filters</li><li>Eight chart palettes and dashboard-wide themes</li><li>PNG and PDF export, kept under Reports</li><li>Image and markdown panels</li></ul></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Live</div><h3>Live traffic maps</h3><p class="lead">Firewall flows travel between countries as they arrive, events per second climb, and a log stream tails the newest events.</p><div class="grid"><ul><li>Traffic flow map with allow and deny colours</li><li>Live event rate, split by a field</li><li>Log stream that flashes new rows</li><li>Region and coordinate maps</li></ul></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Detect</div><h3>24 rule types</h3><p class="lead">Frequency, spike, flatline, new term, cardinality and metric rules, plus ten built for security work.</p><div class="grid"><ul><li>Ordered sequences, impossible travel, beaconing</li><li>Behavioural baselines, risk scoring, volume exfiltration</li><li>Preview on real data before you save</li><li>MITRE ATT&amp;CK tactics and techniques on every rule</li></ul><div class="art shot-art" hidden><img src="assets/img/rules.jpg" alt="The Alert rules list with runbook IDs, severity, rule type, index and last run" width="1446" height="840" onload="this.closest('.art').hidden=false"></div></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Triage</div><h3>Alerts with the evidence</h3><p class="lead">Sequential IDs, severity, assignee, tags and custom fields. Every alert keeps its source events and observables.</p><div class="grid"><ul><li>A detection view for each rule type</li><li>Observables grouped by IPs, users, hosts and hashes</li><li>Work-notes timeline with automatic entries</li><li>Bulk acknowledge, close with a classification, PDF report</li></ul><div class="art shot-art" hidden><img src="assets/img/alerts.jpg" alt="The Alerts page with open alerts by severity and the table of detections" width="1446" height="840" onload="this.closest('.art').hidden=false"></div></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Threat intel</div><h3>Threat intel feeds</h3><p class="lead">Pull indicators from any REST API on a schedule, map the response to indicator fields, and match them against events.</p><div class="grid"><ul><li>IPs, domains, URLs, hashes and emails</li><li>Test run, then map fields to indicator, type, name, severity and time</li><li>Manual lists for your own indicators</li><li>Secrets masked, severity per source</li></ul></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Storage</div><h3>Compressed, searchable storage</h3><p class="lead">Logs are stored as CLP archives with a column index, so counts and charts read a few megabytes instead of terabytes.</p><div class="grid"><ul><li>Lifecycle policies: read-only, snapshot, warm (S3), delete</li><li>S3 and MinIO tiers with on-demand fetch</li><li>Background compaction into larger archives</li><li>Exact counts over a year, no document cap</li></ul></div></article>
+        <article class="step feat" aria-hidden="true"><div class="tag">Platform</div><h3>Built for teams and tenants</h3><p class="lead">Organisations with their own users, roles and API keys. Audit logs for sign-ins, keys and API traffic.</p><div class="grid"><ul><li>Multi-tenant with owner, admin and analyst roles</li><li>API keys with ingest limits</li><li>Audit logs for users and API traffic</li><li>Eleven UI themes, offline and air-gapped builds</li></ul><div class="art shot-art" hidden><img src="assets/img/rule-editor.jpg" alt="The three-step rule editor on the basic info step" width="1446" height="840" onload="this.closest('.art').hidden=false"></div></div></article>
       </div>
     </div>
   </div>
@@ -156,16 +156,16 @@
   </div>
 </section>
 
-<section class="light" id="product" style="padding-top:0">
+<section class="light" id="product" style="padding-top:0" hidden>
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">In the product</div>
       <h2 class="h-l">Alerts, rules and the editor.</h2>
     </div>
     <div class="shots">
-      <figure class="wide"><div class="shot"><img src="assets/img/alerts.jpg" alt="The Alerts page: open alerts by severity, filters, and a table of fired detections with rule, time, severity, alert ID and rule type" width="1446" height="840" loading="lazy" onerror="this.closest('figure').hidden=true"></div><figcaption><b>Alerts</b>Every detection with its severity, rule type, source events and observables. Acknowledge, assign, tag and close with a classification.</figcaption></figure>
-      <figure><div class="shot"><img src="assets/img/rules.jpg" alt="The Alert rules list: runbook IDs, names, severity, rule type, index, last run, alerts fired and an enabled toggle" width="1446" height="840" loading="lazy" onerror="this.closest('figure').hidden=true"></div><figcaption><b>Alert rules</b>Runbook IDs, MITRE techniques, last run and how often each rule fired.</figcaption></figure>
-      <figure><div class="shot"><img src="assets/img/rule-editor.jpg" alt="The new alert rule editor: basic info with rule ID, name, description, tags, severity and MITRE ATT&amp;CK tactics" width="1446" height="840" loading="lazy" onerror="this.closest('figure').hidden=true"></div><figcaption><b>Rule editor</b>Three steps: basic info, detection logic with a preview on real data, then review.</figcaption></figure>
+      <figure class="wide" hidden><div class="shot"><img src="assets/img/alerts.jpg" alt="The Alerts page: open alerts by severity, filters, and a table of fired detections with rule, time, severity, alert ID and rule type" width="1446" height="840" loading="lazy" onload="this.closest('figure').hidden=false"></div><figcaption><b>Alerts</b>Every detection with its severity, rule type, source events and observables. Acknowledge, assign, tag and close with a classification.</figcaption></figure>
+      <figure hidden><div class="shot"><img src="assets/img/rules.jpg" alt="The Alert rules list: runbook IDs, names, severity, rule type, index, last run, alerts fired and an enabled toggle" width="1446" height="840" loading="lazy" onload="this.closest('figure').hidden=false"></div><figcaption><b>Alert rules</b>Runbook IDs, MITRE techniques, last run and how often each rule fired.</figcaption></figure>
+      <figure hidden><div class="shot"><img src="assets/img/rule-editor.jpg" alt="The new alert rule editor: basic info with rule ID, name, description, tags, severity and MITRE ATT&amp;CK tactics" width="1446" height="840" loading="lazy" onload="this.closest('figure').hidden=false"></div><figcaption><b>Rule editor</b>Three steps: basic info, detection logic with a preview on real data, then review.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -354,10 +354,10 @@
         <h3 class="h-m" style="margin-top:6px">Atomix vs Elasticsearch, per provider</h3>
         <div class="legend"><span><i style="background:var(--chart-atomix)"></i>Atomix</span><span><i style="background:var(--chart-es)"></i>Elasticsearch, self-managed</span></div>
         <div class="chart" id="chart"></div>
-        <table class="costs">
+        <div class="table-scroll"><table class="costs">
           <thead><tr><th>Provider</th><th>Atomix server</th><th class="n">Atomix</th><th>Elasticsearch nodes</th><th class="n">Elasticsearch</th><th class="n">Lower by</th></tr></thead>
           <tbody id="cost-rows"></tbody>
-        </table>
+        </table></div>
       </div>
     </div>
 
@@ -436,7 +436,7 @@
   </div>
 </footer>
 
-<script src="assets/data.js?v=7"></script>
-<script src="assets/app.js?v=7"></script>
+<script src="assets/data.js?v=13"></script>
+<script src="assets/app.js?v=13"></script>
 </body>
 </html>
