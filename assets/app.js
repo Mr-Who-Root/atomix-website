@@ -109,6 +109,13 @@
     rail.forEach((li, i) => li.addEventListener("click", () => steps[i].scrollIntoView({ behavior: "smooth", block: "center" })));
   })();
 
+  /* ---------- Product screenshots: hide the box when the file is missing ---------- */
+  $$(".shot img, .shot-art img").forEach((img) => {
+    const hide = () => { const box = img.closest(".art") || img.closest("figure") || img.closest("section"); if (box) box.hidden = true; };
+    if (img.complete && img.naturalWidth === 0) hide();
+    img.addEventListener("error", hide);
+  });
+
   /* ---------- Features: side list switches the panel ---------- */
   (function feats() {
     const rail = $$("#feat-rail li"), panels = $$("#feat-panels .feat");
