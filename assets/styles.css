@@ -325,6 +325,8 @@ footer .brand svg { height: 18px; width: auto; color: var(--ink); }
   .tabs button { width: auto; flex: none; border-bottom: 2px solid transparent; border-left: 0; padding: 12px 14px; }
   .tabs button svg { display: none; }
   .tabs button.active { border-bottom-color: var(--accent); background: transparent; }
+  /* Tabs sit above the panel here, so the block may follow the active panel's height. */
+  .feat:not(.is-active) { display: none; }
 }
 
 /* Product mocks: small, honest renderings of real screens. */
