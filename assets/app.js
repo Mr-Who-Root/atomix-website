@@ -248,9 +248,10 @@
   }
 
   function drawChart(rows, cloud) {
-    const svgW = 640, rowH = 34, pad = { l: 120, r: 70, t: 10, b: 24 };
+    // Elastic Cloud is in the table and the text, not the chart: at 5-10x
+    // the self-managed figure its bar would squash every other one.
+    const svgW = 640, rowH = 34, pad = { l: 110, r: 70, t: 10, b: 24 };
     const data = rows.filter((r) => r.atomix != null).map((r) => [{ k: "Atomix", v: r.atomix, name: r.name }, { k: "Elasticsearch", v: r.es, name: r.name }]);
-    data.push([{ k: "Elastic Cloud", v: cloud, name: "Elastic Cloud (hosted)", cloud: true }]);
     const max = Math.max(...data.flat().map((d) => d.v)) || 1;
     const groupH = rowH * 2 + 14;
     const H = pad.t + data.reduce((s, g) => s + (g.length === 1 ? rowH + 14 : groupH), 0) + pad.b;
