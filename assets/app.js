@@ -9,11 +9,7 @@
 
   /* ---------- Navigation ---------- */
   const nav = $(".nav-wrap");
-  let lastY = window.scrollY;
   window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    nav.classList.toggle("hidden", y > lastY && y > 300 && !nav.classList.contains("open"));
-    lastY = y;
     const ids = ["features", "roadmap", "sizing", "compare", "faq"];
     let active = "";
     for (const id of ids) {
