@@ -382,7 +382,9 @@
     const items = $$("li", menu);
     let focus = 0;
     const open = (yes) => { menu.hidden = !yes; btn.setAttribute("aria-expanded", yes ? "true" : "false"); if (yes) { focus = items.findIndex((li) => li.dataset.id === mixSel.value); items.forEach((li, i) => li.classList.toggle("focus", i === focus)); } };
-    const choose = (id) => { mixSel.value = id; label.textContent = D.mixes.find((m) => m.id === id).label; items.forEach((li) => li.setAttribute("aria-selected", li.dataset.id === id ? "true" : "false")); mixSel.dispatchEvent(new Event("change")); open(false); btn.focus(); };
+    // `focus` is false for the initial selection: focusing the button would
+    // scroll the page to the calculator on load.
+    const choose = (id, focus = true) => { mixSel.value = id; label.textContent = D.mixes.find((m) => m.id === id).label; items.forEach((li) => li.setAttribute("aria-selected", li.dataset.id === id ? "true" : "false")); mixSel.dispatchEvent(new Event("change")); open(false); if (focus) btn.focus({ preventScroll: true }); };
     btn.addEventListener("click", () => open(menu.hidden));
     items.forEach((li) => li.addEventListener("click", () => choose(li.dataset.id)));
     btn.addEventListener("keydown", (e) => {
@@ -391,7 +393,7 @@
       else if (e.key === "Escape") open(false);
     });
     document.addEventListener("click", (e) => { if (!dd.contains(e.target)) open(false); });
-    choose(D.mixes[0].id);
+    choose(D.mixes[0].id, false);
   })();
   mixSel.addEventListener("change", () => {
     const m = D.mixes.find((x) => x.id === mixSel.value);
