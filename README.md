@@ -21,4 +21,7 @@ python3 -m http.server 8080
 
 ## Deploying
 
+When you change `styles.css`, `app.js` or `data.js`, bump the `?v=` number on their links in `index.html` so browsers fetch the new file.
+
+
 Every push to `main` is published by GitHub Pages from the repository root.
