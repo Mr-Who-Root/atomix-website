@@ -95,7 +95,7 @@
 
   /* ---------- Roadmap sticky steps ---------- */
   (function steps() {
-    const steps = $$(".step"), rail = $$(".steps-rail li");
+    const steps = $$("#roadmap .step"), rail = $$("#roadmap .steps-rail li");
     if (!steps.length) return;
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -107,6 +107,16 @@
     }, { rootMargin: "-40% 0px -45% 0px" });
     steps.forEach((s) => sio.observe(s));
     rail.forEach((li, i) => li.addEventListener("click", () => steps[i].scrollIntoView({ behavior: "smooth", block: "center" })));
+  })();
+
+  /* ---------- Features: side list switches the panel ---------- */
+  (function feats() {
+    const rail = $$("#feat-rail li"), panels = $$("#feat-panels .feat");
+    if (!rail.length) return;
+    rail.forEach((li, i) => li.querySelector("button").addEventListener("click", () => {
+      rail.forEach((x, j) => x.classList.toggle("active", j === i));
+      panels.forEach((p, j) => { p.hidden = j !== i; });
+    }));
   })();
 
   /* ---------- Sizing calculator ---------- */

@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3">
+  <link rel="stylesheet" href="assets/styles.css?v=5">
 </head>
 <body>
 
@@ -72,84 +72,42 @@
       <h2 class="h-l">Numbers from real Defender, firewall and Office 365 logs.</h2>
     </div>
     <div class="stats">
-      <div class="stat reveal"><div class="num"><span data-count="16">0</span><span class="unit">: 1</span></div><div class="what">Compression on Microsoft Defender EDR tables, column index included</div></div>
-      <div class="stat reveal"><div class="num"><span data-count="59">0</span><span class="unit">: 1</span></div><div class="what">Compression on Office 365 audit logs</div></div>
-      <div class="stat reveal"><div class="num"><span data-count="25700">0</span><span class="unit">EPS</span></div><div class="what">Events ingested per second from a single client, on one 8-core server</div></div>
-      <div class="stat reveal"><div class="num"><span data-count="0.1" data-decimals="1">0</span><span class="unit">s</span></div><div class="what">To count and chart 4.2 million events over 30 days</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="16">0</span><span class="unit">×</span></div><div class="what">smaller on disk: Microsoft Defender EDR tables, column index included</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="59">0</span><span class="unit">×</span></div><div class="what">smaller on disk: Office 365 audit logs</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="25700">0</span><span class="unit">EPS</span></div><div class="what">events per second ingested from a single client, on one 8-core server</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="0.1" data-decimals="1">0</span><span class="unit">s</span></div><div class="what">to count and chart 4.2 million events over 30 days</div></div>
     </div>
   </div>
 </section>
 
 <section class="dark" id="features">
   <div class="wrap">
-    <div class="carousel-head section-head" style="max-width:none">
-      <div>
-        <div class="eyebrow">What's inside</div>
-        <h2 class="h-l">From the first byte to the <span class="accent">closed alert.</span></h2>
-        <p class="lead muted" style="margin-top:14px">Search, dashboards, detection, threat intel and alert triage in one product. No add-ons and no per-feature tiers.</p>
-      </div>
-      <div class="carousel-nav">
-        <button class="round" data-prev aria-label="Previous">←</button>
-        <button class="round" data-next aria-label="Next">→</button>
-      </div>
+    <div class="section-head">
+      <div class="eyebrow">What's inside</div>
+      <h2 class="h-l">From the first byte to the <span class="accent">closed alert.</span></h2>
+      <p class="lead muted">Search, dashboards, detection, threat intel and alert triage in one product. No add-ons and no per-feature tiers.</p>
     </div>
-    <div class="track">
-      <article class="card reveal">
-        <div class="meta"><span>Explore</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="200" height="92" rx="8"/><path d="M10 36h200M60 36v70"/><path d="M78 88l22-26 18 14 24-30 20 12" stroke-width="2"/><circle cx="100" cy="62" r="3" fill="currentColor"/><circle cx="142" cy="46" r="3" fill="currentColor"/><path d="M20 50h30M20 60h24M20 70h28"/></svg></div>
-        <h3>Discover</h3>
-        <p>Search with KQL or plain words, filter by clicking values, page through millions of events and save the search for a rule later.</p>
-        <ul><li>Free text &amp; KQL</li><li>Field filters</li><li>Histogram drill-down</li><li>Saved searches</li><li>CSV export</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Visualize</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="10" width="60" height="46" rx="6"/><rect x="80" y="10" width="130" height="46" rx="6"/><rect x="10" y="66" width="130" height="44" rx="6"/><rect x="150" y="66" width="60" height="44" rx="6"/><path d="M20 46l12-14 10 8 12-18" stroke-width="2"/><path d="M92 46h10v-20h-10zM108 46h10v-28h-10zM124 46h10v-12h-10zM140 46h10v-24h-10zM156 46h10v-16h-10z" fill="currentColor" stroke="none" opacity=".8"/><circle cx="180" cy="88" r="14"/><path d="M180 74a14 14 0 0 1 14 14h-14z" fill="currentColor"/><path d="M20 100c20-20 40 10 60-10s30-10 50 0" stroke-width="2"/></svg></div>
-        <h3>29 visualization types</h3>
-        <p>Bars, lines, pies and tables, plus Sankey, treemap, box plot, calendar heat map, event timeline, MITRE heat map and SOC metrics. Eight chart palettes, dashboard-wide themes.</p>
-        <ul><li>Dashboards</li><li>Drill-down filters</li><li>PNG &amp; PDF export</li><li>Image &amp; markdown panels</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Live</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="110" cy="60" rx="96" ry="48"/><path d="M14 60h192M110 12v96M40 30c30 16 110 16 140 0M40 90c30-16 110-16 140 0"/><path d="M50 70q60-70 120-20" stroke-width="2"/><circle cx="50" cy="70" r="4" fill="currentColor"/><circle cx="170" cy="50" r="4" fill="currentColor"/><circle cx="124" cy="36" r="3" fill="currentColor"><animate attributeName="opacity" values="1;.2;1" dur="1.6s" repeatCount="indefinite"/></circle></svg></div>
-        <h3>Live traffic maps</h3>
-        <p>Watch firewall flows travel between countries as they arrive, see events per second climb, and tail a live log stream, all pausing when the tab is hidden.</p>
-        <ul><li>Traffic flow map</li><li>Live event rate</li><li>Log stream</li><li>Region &amp; coordinate maps</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Detect</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M110 12l70 26v30c0 24-30 40-70 46-40-6-70-22-70-46V38z"/><path d="M84 62l18 16 36-38" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>24 rule types</h3>
-        <p>Frequency, spike, flatline, new term, cardinality and metric rules, plus ten built for security: ordered sequences, impossible travel, beaconing, behavioural baselines, risk scoring, volume exfiltration and IOC matches.</p>
-        <ul><li>Preview on real data</li><li>MITRE ATT&amp;CK</li><li>Observables</li><li>Suppression</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Triage</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="12" y="14" width="196" height="24" rx="6"/><rect x="12" y="48" width="196" height="24" rx="6"/><rect x="12" y="82" width="196" height="24" rx="6"/><circle cx="28" cy="26" r="5" fill="currentColor"/><circle cx="28" cy="60" r="5" fill="currentColor" opacity=".6"/><circle cx="28" cy="94" r="5" fill="currentColor" opacity=".3"/><path d="M44 26h70M44 60h50M44 94h60"/><rect x="160" y="20" width="36" height="12" rx="6" fill="currentColor"/></svg></div>
-        <h3>Alerts that carry the evidence</h3>
-        <p>Sequential IDs, severity, assignee, tags and custom fields. Every alert keeps its source events, a detection module for its rule type, observables grouped by IPs, users and hashes, and a work-notes timeline.</p>
-        <ul><li>Bulk acknowledge / close</li><li>Closure classification</li><li>PDF report</li><li>Column layouts</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Threat intel</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="110" cy="60" r="40"/><circle cx="110" cy="60" r="14"/><path d="M110 8v24M110 88v24M58 60h24M138 60h24"/><circle cx="110" cy="60" r="4" fill="currentColor"/></svg></div>
-        <h3>Threat intel feeds</h3>
-        <p>Pull indicators from any REST API on a schedule: test the call, map the JSON to indicator, type, name, severity and time, and the IOC rule type matches them against your events.</p>
-        <ul><li>IPs, domains, URLs, hashes</li><li>Manual lists</li><li>Secrets masked</li><li>Per-source severity</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Storage</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="14" y="20" width="192" height="80" rx="8"/><path d="M14 46h192M14 72h192"/><rect x="24" y="28" width="150" height="10" rx="5" fill="currentColor" opacity=".9"/><rect x="24" y="54" width="60" height="10" rx="5" fill="currentColor" opacity=".6"/><rect x="24" y="80" width="18" height="10" rx="5" fill="currentColor"/><text x="180" y="37" font-size="9" fill="currentColor" stroke="none">raw</text><text x="180" y="63" font-size="9" fill="currentColor" stroke="none">gzip</text><text x="180" y="89" font-size="9" fill="currentColor" stroke="none">Atomix</text></svg></div>
-        <h3>Compressed, searchable storage</h3>
-        <p>Logs are stored as CLP archives with a column index, so counts and charts come from a few megabytes instead of rescanning terabytes. Lifecycle policies move old archives to S3 and keep them searchable.</p>
-        <ul><li>Hot → warm → delete</li><li>S3 / MinIO tiers</li><li>Snapshots</li><li>Compaction</li></ul>
-      </article>
-      <article class="card reveal">
-        <div class="meta"><span>Platform</span></div>
-        <div class="art"><svg viewBox="0 0 220 120" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="20" y="20" width="56" height="36" rx="6"/><rect x="144" y="20" width="56" height="36" rx="6"/><rect x="82" y="64" width="56" height="36" rx="6"/><path d="M76 38h68M48 56v8c0 10 20 10 34 0M172 56v8c0 10-20 10-34 0"/><circle cx="48" cy="38" r="4" fill="currentColor"/><circle cx="172" cy="38" r="4" fill="currentColor"/><circle cx="110" cy="82" r="4" fill="currentColor"/></svg></div>
-        <h3>Built for teams and tenants</h3>
-        <p>Organisations with their own users, roles and API keys. Audit logs for sign-ins, keys and API traffic. Eleven UI themes. Every export lands in Reports. Offline, air-gapped builds.</p>
-        <ul><li>Multi-tenant</li><li>RBAC</li><li>API keys with limits</li><li>Audit logs</li></ul>
-      </article>
+    <div class="steps feats">
+      <aside class="steps-rail"><ol id="feat-rail">
+        <li class="active"><button type="button">Discover</button></li>
+        <li><button type="button">Visualize</button></li>
+        <li><button type="button">Live maps</button></li>
+        <li><button type="button">Detection</button></li>
+        <li><button type="button">Alerts</button></li>
+        <li><button type="button">Threat intel</button></li>
+        <li><button type="button">Storage</button></li>
+        <li><button type="button">Platform</button></li>
+      </ol></aside>
+      <div id="feat-panels">
+        <article class="step feat"><div class="tag">Explore</div><h3>Discover</h3><p class="lead">Search with KQL or plain words, filter by clicking values, page through millions of events and save the search for a rule later.</p><div class="grid"><ul><li>Free text and KQL in one box</li><li>Field filters: is, is not, one of, exists, range</li><li>Histogram drill-down and deep paging</li><li>Saved searches and CSV export</li></ul><div class="art shot-art"><img src="assets/img/discover.jpg" alt="Discover showing a month of EDR events with the histogram and document table" width="1446" height="840" loading="lazy" onerror="this.closest('.art').hidden=true"></div></div></article>
+        <article class="step feat" hidden><div class="tag">Visualize</div><h3>29 visualization types</h3><p class="lead">Bars, lines, pies and tables, plus Sankey, treemap, box plot, calendar heat map, event timeline, MITRE heat map and SOC metrics.</p><div class="grid"><ul><li>Dashboards with time ranges and drill-down filters</li><li>Eight chart palettes and dashboard-wide themes</li><li>PNG and PDF export, kept under Reports</li><li>Image and markdown panels</li></ul></div></article>
+        <article class="step feat" hidden><div class="tag">Live</div><h3>Live traffic maps</h3><p class="lead">Firewall flows travel between countries as they arrive, events per second climb, and a log stream tails the newest events.</p><div class="grid"><ul><li>Traffic flow map with allow and deny colours</li><li>Live event rate, split by a field</li><li>Log stream that flashes new rows</li><li>Region and coordinate maps</li></ul></div></article>
+        <article class="step feat" hidden><div class="tag">Detect</div><h3>24 rule types</h3><p class="lead">Frequency, spike, flatline, new term, cardinality and metric rules, plus ten built for security work.</p><div class="grid"><ul><li>Ordered sequences, impossible travel, beaconing</li><li>Behavioural baselines, risk scoring, volume exfiltration</li><li>Preview on real data before you save</li><li>MITRE ATT&amp;CK tactics and techniques on every rule</li></ul><div class="art shot-art"><img src="assets/img/rules.jpg" alt="The Alert rules list with runbook IDs, severity, rule type, index and last run" width="1446" height="840" loading="lazy" onerror="this.closest('.art').hidden=true"></div></div></article>
+        <article class="step feat" hidden><div class="tag">Triage</div><h3>Alerts with the evidence</h3><p class="lead">Sequential IDs, severity, assignee, tags and custom fields. Every alert keeps its source events and observables.</p><div class="grid"><ul><li>A detection view for each rule type</li><li>Observables grouped by IPs, users, hosts and hashes</li><li>Work-notes timeline with automatic entries</li><li>Bulk acknowledge, close with a classification, PDF report</li></ul><div class="art shot-art"><img src="assets/img/alerts.jpg" alt="The Alerts page with open alerts by severity and the table of detections" width="1446" height="840" loading="lazy" onerror="this.closest('.art').hidden=true"></div></div></article>
+        <article class="step feat" hidden><div class="tag">Threat intel</div><h3>Threat intel feeds</h3><p class="lead">Pull indicators from any REST API on a schedule, map the response to indicator fields, and match them against events.</p><div class="grid"><ul><li>IPs, domains, URLs, hashes and emails</li><li>Test run, then map fields to indicator, type, name, severity and time</li><li>Manual lists for your own indicators</li><li>Secrets masked, severity per source</li></ul></div></article>
+        <article class="step feat" hidden><div class="tag">Storage</div><h3>Compressed, searchable storage</h3><p class="lead">Logs are stored as CLP archives with a column index, so counts and charts read a few megabytes instead of terabytes.</p><div class="grid"><ul><li>Lifecycle policies: read-only, snapshot, warm (S3), delete</li><li>S3 and MinIO tiers with on-demand fetch</li><li>Background compaction into larger archives</li><li>Exact counts over a year, no document cap</li></ul></div></article>
+        <article class="step feat" hidden><div class="tag">Platform</div><h3>Built for teams and tenants</h3><p class="lead">Organisations with their own users, roles and API keys. Audit logs for sign-ins, keys and API traffic.</p><div class="grid"><ul><li>Multi-tenant with owner, admin and analyst roles</li><li>API keys with ingest limits</li><li>Audit logs for users and API traffic</li><li>Eleven UI themes, offline and air-gapped builds</li></ul><div class="art shot-art"><img src="assets/img/rule-editor.jpg" alt="The three-step rule editor on the basic info step" width="1446" height="840" loading="lazy" onerror="this.closest('.art').hidden=true"></div></div></article>
+      </div>
     </div>
   </div>
 </section>
@@ -478,7 +436,7 @@
   </div>
 </footer>
 
-<script src="assets/data.js?v=3"></script>
-<script src="assets/app.js?v=3"></script>
+<script src="assets/data.js?v=5"></script>
+<script src="assets/app.js?v=5"></script>
 </body>
 </html>
