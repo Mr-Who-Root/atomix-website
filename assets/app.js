@@ -8,7 +8,7 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Navigation ---------- */
-  const nav = $(".nav");
+  const nav = $(".nav-wrap");
   let lastY = window.scrollY;
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
@@ -18,7 +18,7 @@
     let active = "";
     for (const id of ids) {
       const el = document.getElementById(id);
-      if (el && el.getBoundingClientRect().top <= 140) active = id;
+      if (el && el.getBoundingClientRect().top <= 90) active = id;
     }
     $$(".nav .links a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + active));
   }, { passive: true });
@@ -249,7 +249,7 @@
     if (withBoth.length) {
       const avg = withBoth.reduce((s, r) => s + (1 - r.atomix / r.es), 0) / withBoth.length;
       const yearly = withBoth.reduce((s, r) => s + (r.es - r.atomix), 0) / withBoth.length * 12;
-      $("#savings").innerHTML = `<b>${Math.round(avg * 100)}% lower infrastructure cost</b>on the same providers, about ${usd(yearly)} a year on average across them. Elastic licences and Elastic Cloud are extra; Atomix pricing is a conversation, not a per-GB bill.`;
+      $("#savings").innerHTML = `<b>${Math.round(avg * 100)}% lower infrastructure cost</b>on the same providers, about ${usd(yearly)} a year on average across them. Elastic licences are extra on the Elasticsearch side. Atomix is licensed per deployment, with no per-GB charge.`;
     }
     drawChart(rows, cloud);
   }
@@ -269,7 +269,7 @@
       g.forEach((d, i) => {
         const yy = y + i * rowH;
         const col = d.k === "Atomix" ? "var(--chart-atomix)" : "var(--chart-es)";
-        out += `<rect x="${pad.l}" y="${yy + 6}" width="${Math.max(2, x(d.v) - pad.l)}" height="${rowH - 12}" rx="4" fill="${col}"><title>${d.name} · ${d.k}: ${usd(d.v)} per month</title></rect>`;
+        out += `<rect x="${pad.l}" y="${yy + 6}" width="${Math.max(2, x(d.v) - pad.l)}" height="${rowH - 12}" fill="${col}"><title>${d.name} · ${d.k}: ${usd(d.v)} per month</title></rect>`;
         out += `<text x="${x(d.v) + 8}" y="${yy + rowH / 2 + 4}" font-size="12" fill="#0f172a">${usd(d.v)}</text>`;
       });
       const label = g[0].name;
