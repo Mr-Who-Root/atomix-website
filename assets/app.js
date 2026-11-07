@@ -22,17 +22,22 @@
   $$(".nav .links a").forEach((a) => a.addEventListener("click", () => nav.classList.remove("open")));
 
   /* ---------- Reveal on scroll ---------- */
+  document.documentElement.classList.add("js");
+  const REVEAL = ".section-head, .stat, .feats, .fcol, .numlist li, .step, .panel, .result, .pcard, .score-row, .faq, .cta .wrap, .hero .pill-note, .hero h1, .hero .lead, .hero .actions";
+  $$(REVEAL).forEach((el) => {
+    el.classList.add("reveal");
+    const sib = Array.from(el.parentElement.children).filter((c) => c.classList.contains("reveal"));
+    if (sib.length > 1) el.style.setProperty("--d", Math.min(sib.indexOf(el), 6) * 0.08 + "s");
+  });
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  $$(".reveal").forEach((el) => io.observe(el));
+  }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+  $$(".reveal").forEach((el) => { const r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) el.classList.add("in"); else io.observe(el); });
 
-  /* ---------- Hero: flowing contour lines ---------- */
-  (function hero() {
-    const canvas = $(".hero canvas");
-    if (!canvas) return;
+  /* ---------- Flowing contour lines (hero and closing section) ---------- */
+  function contours(canvas, bandTop, bandHeight) {
     const ctx = canvas.getContext("2d");
-    let w, h, t = 0, raf;
+    let w, h, t = Math.random() * 10, raf, visible = true;
     function size() { const r = canvas.parentElement.getBoundingClientRect(); w = canvas.width = r.width * devicePixelRatio; h = canvas.height = r.height * devicePixelRatio; }
     size();
     window.addEventListener("resize", size);
@@ -40,7 +45,7 @@
       ctx.clearRect(0, 0, w, h);
       const lines = 14;
       for (let i = 0; i < lines; i++) {
-        const y0 = h * (0.08 + (i / lines) * 0.5);
+        const y0 = h * (bandTop + (i / lines) * bandHeight);
         const glow = i === 7;
         ctx.beginPath();
         for (let x = 0; x <= w; x += 6 * devicePixelRatio) {
@@ -48,17 +53,21 @@
           const y = y0 + n * devicePixelRatio;
           if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = glow ? "rgba(136,192,208,0.9)" : "rgba(136,192,208," + (0.05 + (i / lines) * 0.08) + ")";
+        ctx.strokeStyle = glow ? "rgba(96,165,250,0.9)" : "rgba(96,165,250," + (0.05 + (i / lines) * 0.08) + ")";
         ctx.lineWidth = (glow ? 1.6 : 1) * devicePixelRatio;
-        if (glow) { ctx.shadowColor = "rgba(136,192,208,0.8)"; ctx.shadowBlur = 16 * devicePixelRatio; } else ctx.shadowBlur = 0;
+        if (glow) { ctx.shadowColor = "rgba(96,165,250,0.8)"; ctx.shadowBlur = 16 * devicePixelRatio; } else ctx.shadowBlur = 0;
         ctx.stroke();
       }
       t += 0.012;
-      if (!reduceMotion) raf = requestAnimationFrame(draw);
+      if (!reduceMotion && visible) raf = requestAnimationFrame(draw);
     }
+    // Only animate while on screen.
+    new IntersectionObserver((e) => { visible = e[0].isIntersecting && !document.hidden; cancelAnimationFrame(raf); if (visible) draw(); }, { threshold: 0 }).observe(canvas);
+    document.addEventListener("visibilitychange", () => { visible = !document.hidden; cancelAnimationFrame(raf); if (visible) draw(); });
     draw();
-    document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAnimationFrame(raf); else if (!reduceMotion) draw(); });
-  })();
+  }
+  $$(".hero canvas").forEach((c) => contours(c, 0.08, 0.5));
+  $$(".cta canvas").forEach((c) => contours(c, 0.3, 0.5));
 
   /* ---------- Counters ---------- */
   const counters = $$("[data-count]");
@@ -117,14 +126,24 @@
     img.addEventListener("load", show);
   });
 
-  /* ---------- Features: side list switches the panel ---------- */
+  /* ---------- Features: tabs switch the panel ---------- */
   (function feats() {
-    const rail = $$("#feat-rail li"), panels = $$("#feat-panels .feat");
-    if (!rail.length) return;
-    rail.forEach((li, i) => li.querySelector("button").addEventListener("click", () => {
-      rail.forEach((x, j) => x.classList.toggle("active", j === i));
+    const tabs = $$("#feat-rail [role=tab]"), panels = $$("#feat-panels .feat");
+    if (!tabs.length) return;
+    const select = (i) => {
+      tabs.forEach((t, j) => { t.classList.toggle("active", j === i); t.setAttribute("aria-selected", j === i ? "true" : "false"); t.tabIndex = j === i ? 0 : -1; });
       panels.forEach((p, j) => { p.classList.toggle("is-active", j === i); p.setAttribute("aria-hidden", j === i ? "false" : "true"); });
-    }));
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const n = e.key === "ArrowDown" || e.key === "ArrowRight" ? i + 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? i - 1 : null;
+        if (n === null) return;
+        e.preventDefault();
+        const k = (n + tabs.length) % tabs.length; select(k); tabs[k].focus();
+      });
+    });
+    select(0);
   })();
 
   /* ---------- FAQ: animate open and close ---------- */
@@ -356,6 +375,24 @@
 
   const mixSel = $("#mix");
   D.mixes.forEach((m) => { const o = document.createElement("option"); o.value = m.id; o.textContent = m.label; mixSel.appendChild(o); });
+  // Custom dropdown (the native select only holds the value).
+  (function dropdown() {
+    const dd = $("#mix-dd"), btn = $(".dd-btn", dd), menu = $(".dd-menu", dd), label = $("#mix-value");
+    D.mixes.forEach((m) => { const li = document.createElement("li"); li.setAttribute("role", "option"); li.dataset.id = m.id; li.innerHTML = `<span>${m.label}</span><small>${m.ratio} : 1</small>`; menu.appendChild(li); });
+    const items = $$("li", menu);
+    let focus = 0;
+    const open = (yes) => { menu.hidden = !yes; btn.setAttribute("aria-expanded", yes ? "true" : "false"); if (yes) { focus = items.findIndex((li) => li.dataset.id === mixSel.value); items.forEach((li, i) => li.classList.toggle("focus", i === focus)); } };
+    const choose = (id) => { mixSel.value = id; label.textContent = D.mixes.find((m) => m.id === id).label; items.forEach((li) => li.setAttribute("aria-selected", li.dataset.id === id ? "true" : "false")); mixSel.dispatchEvent(new Event("change")); open(false); btn.focus(); };
+    btn.addEventListener("click", () => open(menu.hidden));
+    items.forEach((li) => li.addEventListener("click", () => choose(li.dataset.id)));
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (menu.hidden) open(true); focus = (focus + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length; items.forEach((li, i) => li.classList.toggle("focus", i === focus)); }
+      else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (menu.hidden) open(true); else choose(items[focus].dataset.id); }
+      else if (e.key === "Escape") open(false);
+    });
+    document.addEventListener("click", (e) => { if (!dd.contains(e.target)) open(false); });
+    choose(D.mixes[0].id);
+  })();
   mixSel.addEventListener("change", () => {
     const m = D.mixes.find((x) => x.id === mixSel.value);
     state.mix = m.id; state.ratio = m.ratio; state.bytes = m.bytes;
